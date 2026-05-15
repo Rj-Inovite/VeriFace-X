@@ -1,4 +1,3 @@
-import React from 'react'
 import './App.css'
 
 /* COMPONENTS */
@@ -10,14 +9,17 @@ function App() {
   return (
     <div className="app">
 
-      {/* BACKGROUND BLOBS */}
+      {/* =========================
+          ANIMATED BACKGROUND
+      ========================== */}
       <div className="background-wrapper">
 
+        {/* GRADIENT BLOBS */}
         <div className="bg-blob blue"></div>
         <div className="bg-blob purple"></div>
         <div className="bg-blob pink"></div>
 
-        {/* PARTICLES */}
+        {/* FLOATING PARTICLES */}
         <div className="particle p1"></div>
         <div className="particle p2"></div>
         <div className="particle p3"></div>
@@ -26,13 +28,24 @@ function App() {
 
       </div>
 
-      {/* WEBSITE CONTENT */}
+      {/* =========================
+          NAVBAR
+      ========================== */}
       <Navbar />
 
+      {/* =========================
+          MAIN CONTENT
+      ========================== */}
       <main className="main-content">
+
+        {/* HERO / HOME SECTION */}
         <Home />
+
       </main>
 
+      {/* =========================
+          FOOTER
+      ========================== */}
       <Footer />
 
     </div>

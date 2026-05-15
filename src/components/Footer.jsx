@@ -1,4 +1,3 @@
-import React from 'react'
 import './Footer.css'
 
 import {
@@ -6,16 +5,14 @@ import {
   Mail,
   Phone,
   MapPin,
-  Github,
-  Linkedin,
-  Instagram,
-  Twitter,
   ArrowUpRight,
   Globe,
   Lock,
   ScanFace,
   Cpu,
   ChevronRight,
+  Instagram,
+  Twitter,
 } from 'lucide-react'
 
 function Footer() {
@@ -35,42 +32,42 @@ function Footer() {
         {/* LEFT SIDE */}
         <div className="footer-brand">
 
+          {/* LOGO */}
           <div className="footer-logo">
             <ShieldCheck className="footer-logo-icon" />
+
             <h1>TruthLens AI</h1>
           </div>
 
+          {/* DESCRIPTION */}
           <p className="footer-description">
             TruthLens AI is an advanced AI-powered digital forensic and
             cybersecurity intelligence platform capable of detecting
-            manipulated images, deepfakes, GAN artifacts, facial modifications,
-            metadata inconsistencies, and AI-generated content using
-            enterprise-grade computer vision technologies.
+            manipulated images, deepfakes, GAN artifacts, facial
+            modifications, metadata inconsistencies, and AI-generated
+            content using enterprise-grade computer vision technologies.
           </p>
 
+          {/* SOCIAL ICONS */}
           <div className="footer-socials">
 
             <a href="#">
-              <Github />
+              <ArrowUpRight size={18} />
             </a>
 
             <a href="#">
-              <Linkedin />
+              <Instagram size={18} />
             </a>
 
             <a href="#">
-              <Instagram />
-            </a>
-
-            <a href="#">
-              <Twitter />
+              <Twitter size={18} />
             </a>
 
           </div>
 
         </div>
 
-        {/* FOOTER LINKS */}
+        {/* RIGHT SIDE */}
         <div className="footer-links-wrapper">
 
           {/* PRODUCT */}
@@ -168,7 +165,7 @@ function Footer() {
 
       </div>
 
-      {/* BOTTOM */}
+      {/* FOOTER BOTTOM */}
       <div className="footer-bottom">
 
         <div className="footer-bottom-left">
