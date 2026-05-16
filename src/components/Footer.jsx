@@ -11,8 +11,8 @@ import {
   ScanFace,
   Cpu,
   ChevronRight,
-  Instagram,
-  Twitter,
+  // Instagram/Twitter icons removed because they are not exported by lucide-react
+  // in this project's lucide-react version.
 } from 'lucide-react'
 
 function Footer() {
@@ -55,12 +55,13 @@ function Footer() {
               <ArrowUpRight size={18} />
             </a>
 
+            {/* Instagram/Twitter icons removed (not available in lucide-react version) */}
             <a href="#">
-              <Instagram size={18} />
+              <ArrowUpRight size={18} />
             </a>
 
             <a href="#">
-              <Twitter size={18} />
+              <ArrowUpRight size={18} />
             </a>
 
           </div>

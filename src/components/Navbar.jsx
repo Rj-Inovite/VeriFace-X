@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+
 import "./Navbar.css";
 import { FaHome } from "react-icons/fa";
 
