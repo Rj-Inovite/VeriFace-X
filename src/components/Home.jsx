@@ -1,853 +1,739 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
-
-// eslint-disable-next-line no-unused-vars
-// (kept for future UI telemetry expansions)
+import { useState, useEffect } from 'react';
 import { 
-  Radar, 
-  ScanFace, 
-  Brain, 
-  Shield, 
-  Database, 
-  Lock, 
-  ShieldCheck, 
-  Terminal, 
-  X, 
-  Menu, 
-  Sparkles, 
-  Zap, 
-  PlayCircle, 
-  CheckCircle2, 
-  Cpu, 
-  Plus as PlusIcon,
-  Layers,
-  Eye,
-  Fingerprint,
-  MousePointer2,
-  Upload,
-  Search,
-  ShieldAlert,
-  Smile,
-  Sparkle,
-  Download,
-  HardDrive,
-  Share2,
-  Settings,
-  HelpCircle,
-  BarChart3,
-  Globe,
-  UserCheck,
-  Server,
-  Activity,
-  RefreshCw,
-  FileText,
-  Key,
-  Binary
+  ShieldCheck, Upload, Search, FileText, Loader2, Download,
+  Zap, Menu, X, Layers, Eye, ShieldAlert,
+  Cpu, Image as ImageIcon,
+  Share2, Save, Trash2, Activity, Globe,
+  Star, MessageSquare, CheckCircle, Server,
 } from 'lucide-react';
 import './Home.css';
 
-// --- CONFIGURATION & ENHANCED FORENSIC DATA DATASETS ---
-const features = [
-  {
-    icon: <ScanFace size={40} />,
-    title: 'AI Facial Scan & Landmark Vectors',
-    desc: 'Detect deep-level facial manipulation, automated smile reconstruction, complex skin smoothing layers, and tracking spatial AI beauty filter traces via high-density 68-point spatial mapping matrices.',
-    color: '#3b82f6',
-    detailedMetrics: ['Geometric deviation anomaly checking', 'Sub-surface pixel smoothing isolation', 'Asymmetric mesh matching tracking']
-  },
-  {
-    icon: <Brain size={40} />,
-    title: 'Deepfake Intelligence Unit',
-    desc: 'Analyze structural GAN-generated pixel inconsistencies, frequency spectrum distribution errors, and deep neural reconstruction artifacts using state-of-the-art vision transformer models.',
-    color: '#8b5cf6',
-    detailedMetrics: ['Generative Adversarial Network fingerprinting', 'Diffusion model frequency mismatch markers', 'Latent space artifact extraction arrays']
-  },
-  {
-    icon: <Shield size={40} />,
-    title: 'Forensic Grade Verification Engine',
-    desc: 'Enterprise-level digital forensic security processing engine engineered for strict chain-of-custody data validation, media origin confirmation, and localized digital manipulation risk alerts.',
-    color: '#06b6d4',
-    detailedMetrics: ['Cryptographic media lineage validation', 'Metadata authenticity chain ledger', 'Tamper-evident frame hashing parameters']
-  },
-  {
-    icon: <Radar size={40} />,
-    title: 'Hyper-Spectral Heatmap Detection',
-    desc: 'Visualize edited image regions with high-fidelity forensic heatmaps, localized delta compression differences, and anomalous pixel-level overlays utilizing localized Error Level Analysis (ELA).',
-    color: '#ec4899',
-    detailedMetrics: ['Quantization matrix inequality indexing', 'High-frequency edge compression maps', 'Localized signal-to-noise ratio delta']
-  },
-  {
-    icon: <Database size={40} />,
-    title: 'Cryptographic Metadata Audit',
-    desc: 'Instantly reverse and verify EXIF consistency parameters, nested ICC profile software traces, camera sensor profile noise, timestamps, and deep-seated compression signatures inside raw binaries.',
-    color: '#f59e0b',
-    detailedMetrics: ['ICC profile software fingerprint validation', 'Camera model native sensor noise evaluation', 'Binary payload structural anomaly search']
-  },
-  {
-    icon: <Lock size={40} />,
-    title: 'Secure Cryptographic AI Reports',
-    desc: 'Generate complete, tamper-proof forensic PDF analysis logs with model confidence percentages, localized artifact callouts, and unique sha-256 cryptographic compliance signatures.',
-    color: '#10b981',
-    detailedMetrics: ['Automated judicial chain-of-custody outputs', 'SHA-256 validation seals signature block', 'Localized anomaly callout coordinate arrays']
-  },
-];
+const Home = () => {
+  // ==========================================
+  // UI & NAVIGATION STATE
+  // ==========================================
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('upload'); // 'upload' | 'compare'
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-const analysisSteps = [
-  { id: 1, label: 'Initializing High-Performance Forensic Kernel Engine...', duration: 900 },
-  { id: 2, label: 'Extracting Binary Structural Streams & Re-indexing EXIF Metadata...', duration: 1100 },
-  { id: 3, label: 'Mapping 68-Point Spatial Facial Geometric Landmarks Structural Mesh...', duration: 1400 },
-  { id: 4, label: 'Processing GAN Artifact Frequency Domains via Multilayer Neural Models...', duration: 1800 },
-  { id: 5, label: 'Calculating Localized Error Level Analysis (ELA) Compression Vectors...', duration: 1300 },
-  { id: 6, label: 'Evaluating Spatial Deviations & Synthesizing Risk Confidence Metrics...', duration: 1000 },
-];
 
-const technologies = [
-  { name: 'TensorFlow 2.15', type: 'Core Model Inference Engine' },
-  { name: 'PyTorch 2.2', type: 'Neural Weight Pipeline Matrix' },
-  { name: 'OpenCV Pro', type: 'Advanced Computer Vision Layer' },
-  { name: 'Dlib Library', type: 'Geometric Facial Mapping Vectors' },
-  { name: 'Django Security', type: 'Encrypted REST API Tunneling' },
-  { name: 'React 19 Core', type: 'Dynamic Analytical Dashboard System' },
-  { name: 'PostgreSQL Vector', type: 'Forensic Footprint Storage Arrays' },
-  { name: 'Nvidia CUDA 12', type: 'Real-Time GPU Hardware Acceleration' }
-];
+  // ==========================================
+  // IMAGE CAROUSEL STATE
+  // ==========================================
+  const carouselImages = [
+    "https://img.freepik.com/premium-photo/implementation-computer-vision-facial-recognition-online-access-business-data-biometric-system_982392-2212.jpg",
+    "https://auglio.com/uploads/blog/new.webp",
+    "https://img.freepik.com/premium-photo/biometrics-concept-facial-recognition-system_1077802-20937.jpg"
+  ];
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
-const pricingPlans = [
-  { 
-    name: 'Personal Core', 
-    price: 'Free', 
-    period: 'Forever',
-    desc: 'Essential verification tool configuration designed for individual users auditing online profile media footprints.',
-    features: ['3 High-Res Scans / Day Matrix', 'Standard Accuracy Algorithmic Pass', 'Basic Static ELA Heatmap Panel', 'Community Portal Open Access Protocol'], 
-    btn: 'Start Free Scanning Engine',
-    highlighted: false
-  },
-  { 
-    name: 'Investigator Pro', 
-    price: '$49', 
-    period: 'per month',
-    desc: 'Advanced architectural suite designed specifically for independent journalists, legal professionals, and security experts.',
-    features: ['Unlimited Batch Scanning Priority Queue', 'Priority Neural Model Weight Inference', 'Cryptographic Automated PDF Report Prints', 'Advanced Metadata Decryptor Structural Parsing', 'API Access Client Token (Tier 1 Integration)'], 
-    btn: 'Get Professional Access Tunnel', 
-    highlighted: true 
-  },
-  { 
-    name: 'Enterprise Elite', 
-    price: 'Custom', 
-    period: 'Tailored Billing',
-    desc: 'Complete defense mechanism built to handle high-volume institutional media verification and automated enterprise pipelines.',
-    features: ['Unlimited Scale Core API Core Integration', 'White-label Custom System Reporting Logs', 'Dedicated On-Premise AI Model Vector Training', '24/7/365 Tier-3 SLA Dedicated Engineer Support', 'Custom Model Tuning Framework Deployments'], 
-    btn: 'Contact System Architects',
-    highlighted: false
-  }
-];
-
-const comprehensiveFaq = [
-  { q: "How does Error Level Analysis (ELA) identify synthetic imagery?", a: "Error Level Analysis saves the targeted image at a specific uniform compression rate, evaluating the differences in error levels across different regions. Authentic captures show a standard rate of degradation across matching planes, while deepfakes or edited objects show distinct anomalous pixel brightness spikes." },
-  { q: "Can TruthLens discover deepfakes that have had their EXIF data completely stripped?", a: "Yes. While metadata parameters offer high-value forensic hints, our core model works downstream directly on deep spatial pixel layers, tracking mathematical artifacts left by GAN generators and diffusion neural networks that cannot be removed by simple file conversions." },
-  { q: "Is the uploaded imagery exposed to external networks or servers?", a: "Security is foundational. TruthLens structures operation through encrypted isolated runtimes. Under our zero-log architecture protocols, media inputs are fully parsed inside sandboxed volatile memory buffers and destroyed immediately upon generation of your cryptographic hash analysis reports." }
-];
-
-// --- STABLE SUB-COMPONENTS ---
-const FloatingParticle = ({ delay, left, size }) => (
-  <div 
-    className="particle" 
-    style={{ 
-      animationDelay: `${delay}s`, 
-      left: `${left}%`,
-      width: `${size}px`,
-      height: `${size}px`
-    }}
-  />
-);
-
-const SectionTitle = ({ subtitle, title, description }) => (
-  <div className="section-title">
-    <div className="title-bracket-left"></div>
-    <div className="title-content">
-      <span className="top-title">{subtitle}</span>
-      <h2>{title}</h2>
-      {description && <p>{description}</p>}
-    </div>
-    <div className="title-bracket-right"></div>
-  </div>
-);
-
-// --- MAIN EXPORTED DASHBOARD INTERFACE ---
-export default function Home() {
-  // UI Layout State Controls
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState('summary');
-  const [compareOffset, setCompareOffset] = useState(50);
-  const [expandedFeature, setExpandedFeature] = useState(null);
-  const [activeFaq, setActiveFaq] = useState(null);
-  
-  // High-End Functional Deepfake Scanner Functional State Engine
-  const [scanning, setScanning] = useState(false);
-  const [progress, setProgress] = useState(0);
+  // ==========================================
+  // ANALYSIS & FILE STATE
+  // ==========================================
+  const [singleFile, setSingleFile] = useState(null); // Preview URL
+  const [rawFile, setRawFile] = useState(null);       // Actual File object for Django
+  const [singleFileName, setSingleFileName] = useState("");
+  const [compareData, setCompareData] = useState({ original: null, suspect: null, originalName: "", suspectName: "" });
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisProgress, setAnalysisProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState("");
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [showResults, setShowResults] = useState(false);
-  const [logs, setLogs] = useState([]);
-  const systemUptime = "99.998%";
-  // Future use: selectedCaseStudy / setSelectedCaseStudy
-  // (intentionally not stored yet to avoid unused-var lint errors)
+  const [showFullReport, setShowFullReport] = useState(false);
+  const [scanResult, setScanResult] = useState(null);
 
+  // ==========================================
+  // STATS & HISTORY STATE
+  // ==========================================
+  const [counters, setCounters] = useState({ scanned: 1245000, deepfakes: 452100, accuracy: 99.8 });
+  const [history, setHistory] = useState([
+    { id: "TL-8821", name: "identity_proof.png", type: "REAL", score: 98.4, date: "May 15, 2026", threat: "Low", device: "Sony Alpha 7R", location: "New York, USA", edited: "No" },
+    { id: "TL-8822", name: "news_broadcast.mp4", type: "FAKE", score: 12.1, date: "May 16, 2026", threat: "High", device: "Unknown GAN Matrix", location: "St Petersburg, Russia", edited: "Deep Synthesis" },
+    { id: "TL-8823", name: "ceo_profile.jpg", type: "MODIFIED", score: 45.8, date: "May 16, 2026", threat: "Medium", device: "Samsung S24 Ultra", location: "London, UK", edited: "Yes (Splice Artifacts)" }
+  ]);
 
-  // System Element Ref Attachments
-  const fileInputRef = useRef(null);
-  const sliderRef = useRef(null);
-  const terminalEndRef = useRef(null);
+  // ==========================================
+  // TESTIMONIALS STATE
+  // ==========================================
+  const [activeReview, setActiveReview] = useState(0);
+  const testimonials = [
+    { name: "Sarah Jenkins", role: "Chief of Cyber Forensics", org: "Global Defense Corp", text: "AI Vision Guard transformed our digital verification workflows. The depth of GAN artifact analysis saves our team hours of manual hex inspection.", rating: 5 },
+    { name: "Marcus Thorne", role: "Managing Editor", org: "Chronicle Media Group", text: "In an era of rampant misinformation, this platform serves as our absolute source of truth. The enterprise-grade audit logs are bulletproof.", rating: 5 },
+    { name: "Dr. Elena Rostova", role: "AI Security Researcher", org: "Tech Institute of Munich", text: "Exceptional accuracy ratings. The pixel irregularity maps perfectly mirror mathematical consistency anomalies in generated content.", rating: 5 }
+  ];
 
-  // Dynamic Telemetry State Variables
-  const [scannedCount, setScannedCount] = useState(1482093);
-  const [threatLevel] = useState("ELEVATED");
+  const analysisSteps = [
+    "Initializing Forensic Kernel...",
+    "Extracting Metadata & EXIF structures...",
+    "Analyzing Pixel Matrix Inconsistencies...",
+    "Running Advanced Deepfake Neural Models...",
+    "Scanning Structural Layers for GAN Artifacts...",
+    "Checking Facial Landmark Vectors & Realism...",
+    "Finalizing Authenticity Matrix Scores..."
+  ];
 
-  // Memoizing Background Particle System to Avoid React Frame-rate Drops
-  const particles = useMemo(() => {
-    return Array.from({ length: 40 }).map((_, i) => ({
-      id: i,
-      delay: i * 0.35, 
-      left: (i * 2.65) % 100, 
-      size: (i % 5) + 2
-    }));
-  }, []);
-
-  // Increment Live Counter Statistics for System Authenticity Visualizer
+  // ==========================================
+  // EFFECTS & LISTENERS
+  // ==========================================
   useEffect(() => {
-    const counterInterval = setInterval(() => {
-      setScannedCount(prev => prev + Math.floor(Math.random() * 3) + 1);
-    }, 4000);
-    return () => clearInterval(counterInterval);
-  }, []);
+    const bgTimer = setInterval(() => {
+      setCurrentBgIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 3000);
+    return () => clearInterval(bgTimer);
+  }, [carouselImages.length]);
 
-  // Auto Scroll Terminal to Base Coordinates on Log Stream Ingestion
   useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [logs]);
-
-  // Sticky Navigation Bar Backdrop Scroll Trigger Logic
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Multi-Phase Analysis Execution Logic Loop Simulation
-  const startAnalysis = () => {
-    if (!uploadedImage) return;
-    
-    setScanning(true);
-    setShowResults(false);
-    setProgress(0);
-    setLogs([
-      "[SYSTEM_BOOT]: Initializing TruthLens Cryptographic Forensic Kernel Environment...", 
-      "[HARDWARE]: Establishing handshakes with primary Tesla GPU core clusters...",
-      "[INGESTION]: Loading binary stream payload buffer into zero-log sandboxed address..."
-    ]);
-    
-    let currentPhase = 0;
-    
-    const runPhase = () => {
-      if (currentPhase < analysisSteps.length) {
-        const step = analysisSteps[currentPhase];
-        setCurrentStep(step.label);
-        
-        setLogs(prev => [
-          ...prev, 
-          `[OK] Kernel Allocation Success for Pipeline Module: ${step.id}`,
-          `[PROCESSING]: Launching operational sequence subroutines for [${step.label}]...`
-        ]);
+  useEffect(() => {
+    const counterTimer = setInterval(() => {
+      setCounters(prev => ({
+        ...prev,
+        scanned: prev.scanned + Math.floor(Math.random() * 3) + 1,
+        deepfakes: prev.deepfakes + (Math.random() > 0.7 ? 1 : 0)
+      }));
+    }, 4000);
+    return () => clearInterval(counterTimer);
+  }, []);
 
-        let start = 0;
-        const interval = setInterval(() => {
-          start += 20;
-          if (start >= 100) {
-            clearInterval(interval);
-            currentPhase++;
-            setProgress((currentPhase / analysisSteps.length) * 100);
-            setTimeout(runPhase, 500); 
-          }
-        }, step.duration / 5);
+  // ==========================================
+  // CORE SCAN LOGIC (DJANGO INTEGRATION)
+  // ==========================================
+  const runForensicScan = async () => {
+    if (!rawFile && activeTab === 'upload') return;
+    if ((!compareData.original || !compareData.suspect) && activeTab === 'compare') return;
+
+    setIsAnalyzing(true);
+    setAnalysisProgress(0);
+    setShowFullReport(false);
+
+    // 1. Visual Progress Simulation
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 2;
+      if (progress <= 90) {
+        setAnalysisProgress(progress);
+        const stepIndex = Math.floor((progress / 100) * analysisSteps.length);
+        setCurrentStep(analysisSteps[stepIndex] || "Processing Neural Layers...");
+      }
+    }, 50);
+
+    // 2. Prepare Payload
+    const formData = new FormData();
+    formData.append('image', rawFile);
+    formData.append('file_name', singleFileName);
+    formData.append('file_size', (rawFile.size / (1024 * 1024)).toFixed(2) + " MB");
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/scan/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        clearInterval(progressInterval);
+        setAnalysisProgress(100);
+        setCurrentStep("Finalizing Security Audits...");
+
+        setTimeout(() => {
+          // Map Django response to Frontend Result Schema
+          const result = {
+            id: data.system_hash || `TL-${Math.floor(Math.random() * 9000) + 1000}`,
+            name: data.file_name || singleFileName,
+            status: data.status === 'real' ? 'AUTHENTIC IMAGE' : data.status === 'fake' ? 'DEEPFAKE DETECTED' : 'MODIFIED ASSET',
+            score: data.confidence_score,
+            risk: data.status === 'fake' ? 'High' : data.status === 'modified' ? 'Medium' : 'Low',
+            type: data.status.toUpperCase(),
+            timestamp: new Date(data.created_at).toLocaleString(),
+            metadata: { 
+              device: data.status === 'fake' ? "Unknown GAN Matrix v4" : "Verified Optical Sensor", 
+              location: "Secure Node Ingest", 
+              edited: data.status === 'real' ? "None Detected" : "High Structural Modification" 
+            }
+          };
+
+          setScanResult(result);
+          setShowFullReport(true);
+          setHistory(prev => [result, ...prev]);
+          setIsAnalyzing(false);
+        }, 800);
       } else {
-        setScanning(false);
-        setShowResults(true);
-        setLogs(prev => [
-          ...prev, 
-          "[SUCCESS]: Comprehensive Deep-Layer Image Forensic Analysis Completed.", 
-          "[TELEMETRY]: GAN artifact structural signature matching algorithm successfully halted.",
-          `[REPORT]: Final Analysis Matrix compiled. Confidence Score: 87.42% POSITIVE MODIFICATION.`
-        ]);
+        clearInterval(progressInterval);
+        alert("Server Error: Django backend failed to process image.");
+        setIsAnalyzing(false);
+      }
+    } catch {
+
+      clearInterval(progressInterval);
+      alert("Connection Refused: Ensure Django server is running on port 8000.");
+      setIsAnalyzing(false);
+    }
+
+  };
+
+  // ==========================================
+  // UI HANDLERS
+  // ==========================================
+  const handleFileUpload = (e, target) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    
+    if (target === 'single') {
+      setSingleFile(url);
+      setRawFile(file);
+      setSingleFileName(file.name);
+    } else {
+      setCompareData(prev => ({ 
+        ...prev, 
+        [target]: url,
+        [`${target}Name`]: file.name
+      }));
+    }
+  };
+
+  const handleDeleteRecord = (id, e) => {
+    e.stopPropagation();
+    setHistory(prev => prev.filter(item => item.id !== id));
+    if (scanResult && scanResult.id === id) {
+      setShowFullReport(false);
+      setScanResult(null);
+    }
+  };
+
+  const handleViewRecord = (item) => {
+    const remappedResult = {
+      id: item.id,
+      name: item.name,
+      status: item.type === 'FAKE' ? 'DEEPFAKE DETECTED' : item.type === 'MODIFIED' ? 'MODIFIED ASSET' : 'AUTHENTIC IMAGE',
+      score: item.score,
+      risk: item.risk || item.threat,
+      timestamp: item.date || item.timestamp,
+      metadata: {
+        device: item.device || "Verified Device Hardware",
+        location: item.location || "Secure Gateway Ingest",
+        edited: item.edited || "Unspecified Matrix Layers"
       }
     };
-
-    setTimeout(runPhase, 600);
+    setScanResult(remappedResult);
+    setShowFullReport(true);
+    document.getElementById('analysis').scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setUploadedImage(event.target.result);
-        setShowResults(false);
-      };
-      reader.readAsDataURL(file);
-      setLogs(prev => [
-        ...prev, 
-        `[UPLINK_ESTABLISHED]: Core payload accepted from local file link system data.`,
-        `[METADATA]: Target Identity String: [${file.name}]`,
-        `[METADATA]: Structural Size Footprint: ${(file.size / 1024).toFixed(2)} Kilobytes`,
-        `[METADATA]: Content Mime Type Blueprint: ${file.type}`
-      ]);
-    }
+  const handleDownloadReport = () => {
+    if (!scanResult) return;
+    const reportContent = `
+===================================================================
+                AI VISION GUARD FORENSIC AUDIT REPORT            
+===================================================================
+Report ID    : ${scanResult.id}
+Timestamp    : ${scanResult.timestamp}
+Target Asset : ${scanResult.name}
+-------------------------------------------------------------------
+CRITICAL ARCHITECTURE FINDINGS:
+-------------------------------------------------------------------
+Verdict Status    : ${scanResult.status}
+Authenticity Score: ${scanResult.score}%
+Threat Level      : ${scanResult.risk.toUpperCase()}
+
+METADATA AUDIT TRACE:
+- Ingested Hardware Profile : ${scanResult.metadata.device}
+- Geographic Ingestion Node : ${scanResult.metadata.location}
+- Structural Layer Edits    : ${scanResult.metadata.edited}
+
+CORE FORENSIC ENGINE ANALYSIS:
+1. High-frequency pixel density verification shows spatial discrepancies.
+2. EXIF headers match synthetic structural signatures rather than sensor output.
+3. GAN Generative patterns discovered inside facial coordinate grids.
+
+-------------------------------------------------------------------
+Classification Authority: Security Operations Center Node 142
+Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
+===================================================================`;
+
+    const element = document.createElement("a");
+    const file = new Blob([reportContent], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = `Forensic_Report_${scanResult.id}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
-  const handleSliderMove = (e) => {
-    if (!sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
-    let x;
-    if (e.touches && e.touches[0]) {
-      x = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
-    } else {
-      x = ((e.clientX - rect.left) / rect.width) * 100;
-    }
-    setCompareOffset(Math.max(0, Math.min(100, x)));
-  };
+  const filteredHistory = history.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.id.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
 
-  const loadSampleCaseStudy = () => {
-    setUploadedImage("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='100%' height='100%' fill='%230f172a'/><circle cx='400' cy='250' r='120' fill='%231e293b' stroke='%233b82f6' stroke-width='4'/><path d='M320 450 Q 400 370 480 450' fill='none' stroke='%233b82f6' stroke-width='4'/><text x='50%' y='90%' dominant-baseline='middle' text-anchor='middle' fill='%2364748b' font-family='monospace' font-size='16'>[TRUTHLENS FORENSIC SIMULATED SUBJECT IMAGE]</text></svg>");
-    setShowResults(false);
-    setLogs(prev => [
-      ...prev,
-      "[SANDBOX]: Loaded pre-compiled neural fingerprint sample case study template.",
-      "[SANDBOX]: Hardware testing overrides active. Ready for analysis execution pass."
-    ]);
-    document.getElementById('scanner')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // ==========================================
+  // RENDER COMPONENT
+  // ==========================================
   return (
-    <div className={`home-wrapper ${scanning ? 'scanning-active' : ''}`}>
-      {/* Background Micro Particle Ambient Environment */}
-      {particles.map((p) => (
-        <FloatingParticle key={p.id} delay={p.delay} left={p.left} size={p.size} />
-      ))}
+    <div className="app-wrapper">
+      {/* 1. INTERACTIVE NAVBAR */}
+      <nav className={`nav-v3 ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="nav-inner">
+          <div className="nav-brand">
+            <div className="logo-hex">
+              <ShieldCheck className="logo-svg" />
+            </div>
+            <div className="brand-text">
+              <h1>AI VISION <span>GUARD</span></h1>
+              <small>Neural Forensic Intel v4.5</small>
+            </div>
+          </div>
 
-      {/* Cyberpunk Glassmorphic Backdrops */}
-      <div className="bg-gradient one"></div>
-      <div className="bg-gradient two"></div>
-      <div className="grid-layer"></div>
+          <div className={`nav-links-box ${isMenuOpen ? 'open' : ''}`}>
+            <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+            <a href="#analysis" onClick={() => setIsMenuOpen(false)}>Analysis Hub</a>
+            <a href="#activity" onClick={() => setIsMenuOpen(false)}>Audit Logs</a>
+            <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Case Studies</a>
+            <a href="#architecture" onClick={() => setIsMenuOpen(false)}>Nodes</a>
+          </div>
 
-      {/* Primary Shell Navigation System */}
-      <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-        <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <ShieldCheck className="logo-icon" />
-          <span>TruthLens <span className="blue-text">AI</span></span>
+          <div className="nav-actions-desktop">
+            <button className="nav-btn-sec">Terminal Login</button>
+            <button className="nav-btn-pri" onClick={() => document.getElementById('analysis').scrollIntoView({ behavior: 'smooth' })}>Start Scan</button>
+            <button className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
         </div>
-
-        <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
-          <a href="#hero" onClick={() => setMenuOpen(false)}>Core Shell</a>
-          <a href="#features" onClick={() => setMenuOpen(false)}>Analytical Tech</a>
-          <a href="#visualize" onClick={() => setMenuOpen(false)}>Artifact Vis</a>
-          <a href="#scanner" onClick={() => setMenuOpen(false)}>Forensic Matrix</a>
-          <a href="#pricing" onClick={() => setMenuOpen(false)}>Access Licensing</a>
-          <a href="#faq" onClick={() => setMenuOpen(false)}>Knowledge Base</a>
-        </div>
-
-        <div className="nav-actions">
-          <button className="secondary-btn-nav" onClick={() => alert("TruthLens CLI Tool Bindings v4.2-Prod\nUsage: $ truthlens --scan <image_path>")}>
-            <Terminal size={14}/> TruthLens CLI
-          </button>
-          <button className="primary-btn-nav">System Console</button>
-        </div>
-
-        <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle Navigation Menu">
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero-section" id="hero">
-        <div className="hero-left">
-          <div className="hero-tag">
-            <Sparkles size={14} className="sparkle-icon" />
-            <span>v4.2 PRO Forensics Active Platform</span>
-          </div>
-          <h1>Deconstruct AI Media via <span className="gradient-text">Neural Signatures</span> & DNA Mapping.</h1>
-          <p>Every commercial generative AI framework imprints unique spatial distributions. TruthLens AI processes targeted pixel variances and deep multi-stage GAN layer artifact configurations to uncover forensic evidence invisible to human sight.</p>
-          
-          <div className="hero-btns">
-            <button className="main-cta" onClick={() => document.getElementById('scanner')?.scrollIntoView({ behavior: 'smooth' })}>
-              <Zap size={18} /> Deploy Scanning Engine
-            </button>
-            <button className="ghost-cta" onClick={loadSampleCaseStudy}>
-              <PlayCircle size={18} /> Load Sample Template
-            </button>
-          </div>
-
-          <div className="hero-social-proof">
-             <div className="stat-pill"><CheckCircle2 size={14}/> SecOps ISO-27001 Certified</div>
-             <div className="stat-pill"><Database size={14}/> {scannedCount.toLocaleString()} Audits Logged</div>
-             <div className="stat-pill"><Lock size={14}/> Compliant Zero-Log Architecture</div>
-          </div>
-        </div>
-
-        <div className="hero-right">
-          <div className="forensic-visualizer">
-            <div className="scanner-frame">
-              <div className="scan-line-animation"></div>
-              <div className="landmark-overlay">
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <div key={i} className={`landmark-dot ld-${i}`} style={{ top: `${(i * 4.2) % 88}%`, left: `${(i * 6.4) % 88}%` }} />
-                ))}
-              </div>
-              <div className="status-readout">
-                <div className="readout-row"><span>CORE_VECTOR_NODE:</span> <strong>#TRL-092_SECURE</strong></div>
-                <div className="readout-row"><span>CURRENT_THREAT:</span> <strong className="text-red">{threatLevel}</strong></div>
-                <div className="readout-row"><span>ENGINE_STATUS:</span> <strong style={{color: '#10b981'}}>OPTIMIZED</strong></div>
-              </div>
+      {/* 2. HERO BANNER */}
+      <header className="hero-v3" id="home">
+        {carouselImages.map((imgUrl, idx) => (
+          <div 
+            key={idx}
+            className={`hero-carousel-slide ${idx === currentBgIndex ? 'active' : ''}`}
+            style={{ backgroundImage: `linear-gradient(to right, rgba(10, 15, 30, 0.92), rgba(10, 15, 30, 0.75)), url(${imgUrl})` }}
+          />
+        ))}
+        <div className="hero-grid-bg"></div>
+        <div className="hero-content-v3">
+          <div className="hero-left">
+            <div className="status-badge">
+              <div className="dot pulse"></div> 
+              Forensic Network Online: {counters.scanned.toLocaleString()} Node Operations Active
+            </div>
+            <h1 className="hero-title">
+              Advanced Neural <span className="text-grad">Image & Deepfake Forensic</span> System
+            </h1>
+            <p className="hero-desc">
+              Expose generative manipulations, facial coordinate tampering, and synthetic anomalies with an analytical image processing engine. Military grade validation parameters designed for modern threat tracking vectors.
+            </p>
+            <div className="hero-btns">
+              <button className="btn-glow-pri" onClick={() => {setActiveTab('upload'); document.getElementById('analysis').scrollIntoView({ behavior: 'smooth' });}}>
+                <Upload size={20} /> Deep Ingestion Scan
+              </button>
+              <button className="btn-glass-sec" onClick={() => {setActiveTab('compare'); document.getElementById('analysis').scrollIntoView({ behavior: 'smooth' });}}>
+                <Layers size={20} /> Differential Compare
+              </button>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Hardware / Engine Marquee Banner */}
-      <section className="tech-marquee">
-        <div className="marquee-content">
-          {technologies.concat(technologies).map((tech, i) => (
-            <div className="tech-tag-chip" key={i}>
-              <Cpu size={13} />
-              <span>{tech.name}</span>
-              <small>{tech.type}</small>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Deep Core Features Section */}
-      <section className="features-section" id="features">
-        <SectionTitle 
-          subtitle="Advanced Forensic Engine Suite" 
-          title="Digital Verification Re-Engineered" 
-          description="An enterprise analytical matrix meticulously constructed for cybersecurity squads, global media channels, and digital crime analysts."
-        />
-        <div className="features-grid">
-          {features.map((f, i) => (
-            <div 
-              className={`feature-card-advanced ${expandedFeature === i ? 'expanded' : ''}`} 
-              key={i}
-              onClick={() => setExpandedFeature(expandedFeature === i ? null : i)}
-            >
-              <div className="f-icon" style={{ background: `${f.color}18`, color: f.color }}>{f.icon}</div>
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-              
-              {expandedFeature === i && (
-                <div className="expanded-metrics-block">
-                  <h4>Core Operational Subroutines:</h4>
-                  <ul>
-                    {f.detailedMetrics.map((metric, idx) => (
-                      <li key={idx}><Binary size={12} style={{color: f.color, marginRight: '6px'}}/> {metric}</li>
-                    ))}
-                  </ul>
+          <div className="hero-right">
+            <div className="main-visual-box">
+              <div className="scanning-bar"></div>
+              <div className="placeholder-img-v3">
+                <ImageIcon size={90} className="faded-icon" />
+              </div>
+              <div className="floating-ui-card">
+                <ShieldAlert className="alert-icon" />
+                <div>
+                  <h4>Deepfake AI Signature</h4>
+                  <div className="mini-progress"><div style={{width: '94.2%'}}></div></div>
+                  <small>Confidence Factor: 94.2%</small>
                 </div>
-              )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-              <div className="f-footer">
-                <div className="f-status"><div className="status-dot"></div> Operational Pipeline</div>
-                <button className="f-more" aria-label="Expand Feature Technical Metrics">
-                  <PlusIcon size={14} style={{ transform: expandedFeature === i ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}/>
+      {/* 3. ANALYSIS HUB */}
+      <section className="analysis-hub" id="analysis">
+        <div className="container">
+          <div className="hub-header">
+            <div className="header-icon"><Cpu /></div>
+            <h2>Forensic Deep Ingestion Hub</h2>
+            <p>Upload target architecture files to run state-of-the-art synthetic verification passes.</p>
+          </div>
+
+          <div className="hub-tabs">
+            <button className={activeTab === 'upload' ? 'active' : ''} onClick={() => setActiveTab('upload')}>
+              <Upload size={18} /> Asset Ingestion Scan
+            </button>
+            <button className={activeTab === 'compare' ? 'active' : ''} onClick={() => setActiveTab('compare')}>
+              <Layers size={18} /> Differential Cross Engine
+            </button>
+          </div>
+
+          <div className="analysis-workspace">
+            {activeTab === 'upload' ? (
+              <div className="upload-container animate-fade">
+                <div className="drop-v3" onClick={() => document.getElementById('up-single').click()}>
+                  <input type="file" id="up-single" hidden onChange={(e) => handleFileUpload(e, 'single')} accept="image/*" />
+                  {singleFile ? (
+                    <div className="preview-wrap">
+                      <img src={singleFile} alt="Forensic Target Preview" className="scan-preview-img" />
+                      <div className="preview-meta-pill">{singleFileName}</div>
+                    </div>
+                  ) : (
+                    <div className="drop-content">
+                      <div className="icon-circle-v3"><ImageIcon size={40} /></div>
+                      <h3>Drag & Drop Forensic Analysis Sample</h3>
+                      <p>Accepts RAW, JPEG, PNG, WEBP and Structural Media Formats</p>
+                    </div>
+                  )}
+                </div>
+                <button 
+                  className={`btn-scan-action ${isAnalyzing ? 'loading' : ''}`} 
+                  disabled={!singleFile || isAnalyzing}
+                  onClick={runForensicScan}
+                >
+                  {isAnalyzing ? `COMPUTING ARTIFACT MATRICES ${analysisProgress}%` : 'INITIALIZE SYSTEM NEURAL AUDIT'}
                 </button>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Comparison Slider Section */}
-      <section className="comparison-section" id="visualize">
-        <div className="comparison-content">
-           <div className="comp-text">
-              <div className="mini-tag"><Layers size={12} /> Spatial Deconstruction</div>
-              <h2>Visualize Reconstructed Core Artifacts</h2>
-              <p>Toggle between the baseline optical raw asset capture and our specialized deep neural heatmap overlay. Observe exactly where individual pixel clusters were mathematically hallucinated or smoothed by deep synthesis networks.</p>
-              <ul className="comp-features">
-                 <li><Eye size={16} className="blue-icon"/> <span><strong>Pixel Deviation Tracking:</strong> Isolate anomalies down to the sub-pixel high-frequency channel layers.</span></li>
-                 <li><Layers size={16} className="purple-icon"/> <span><strong>Layer-by-Layer Decomposition:</strong> Peel back post-processing filter signatures to discover historical generation nodes.</span></li>
-                 <li><Activity size={16} className="cyan-icon"/> <span><strong>Error Discrepancy Indexing:</strong> Cross-reference compression artifacts to reveal image manipulation borders.</span></li>
-              </ul>
-           </div>
-           <div 
-              className="slider-wrapper" 
-              ref={sliderRef} 
-              onMouseMove={handleSliderMove}
-              onTouchMove={handleSliderMove}
-           >
-              {/* Fallback procedural backgrounds simulated using CSS gradients if external imagery missing */}
-              <div className="slider-img original">
-                <div className="fallback-slider-visual base-optics">
-                  <div className="simulated-face-contour"></div>
-                </div>
-              </div>
-              <div className="slider-img heatmap" style={{ clipPath: `inset(0 0 0 ${compareOffset}%)` }}>
-                <div className="fallback-slider-visual thermal-optics">
-                  <div className="simulated-face-contour error-glowing"></div>
-                  <div className="heatmap-patch region-1"></div>
-                  <div className="heatmap-patch region-2"></div>
-                </div>
-              </div>
-              <div className="slider-bar" style={{ left: `${compareOffset}%` }}>
-                 <div className="slider-handle"><MousePointer2 size={14}/></div>
-              </div>
-              <div className="label-orig">Original Asset Frame</div>
-              <div className="label-heat">TruthLens AI Anomaly Heatmap</div>
-           </div>
-        </div>
-      </section>
-
-      {/* Interactive Scanner Matrix Terminal Section */}
-      <section className="scanner-section" id="scanner">
-        <SectionTitle 
-          subtitle="System Ingestion Unit" 
-          title="Neural Manipulation Diagnostic Console" 
-          description="Inject raw image arrays into our safe validation buffers. Watch real-time execution telemetry of algorithmic forensic processing passes."
-        />
-        
-        <div className="scanner-layout">
-          <div className="scanner-control">
-            <div className="control-header">
-              <Terminal size={20} className="terminal-header-icon" />
-              <h3>Forensic Terminal Client v4.2</h3>
-              <div className="window-dots">
-                <span className="dot d1"></span><span className="dot d2"></span><span className="dot d3"></span>
-              </div>
-            </div>
-            
-            <div className="upload-container">
-              {!uploadedImage ? (
-                <div className="drop-area" onClick={() => fileInputRef.current.click()}>
-                  <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" hidden />
-                  <div className="upload-circle">
-                    <Upload size={32} />
-                  </div>
-                  <h4>Initialize Secure Forensic Uplink</h4>
-                  <p>Click or drag-and-drop target media array file to spin up pipeline verification hashes</p>
-                  <div className="file-badges">
-                    <span>JPEG LAYER</span><span>PNG STREAM</span><span>WEBP BINARY</span><span>RAW EXIF</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="preview-active">
-                  <img src={uploadedImage} alt="Forensic Analysis Target Subject Frame" />
-                  <div className="preview-overlay">
-                    <button className="btn-cancel" onClick={() => { setUploadedImage(null); setShowResults(false); setLogs([]); }}>Abort Session</button>
-                    <button className="btn-analyze" onClick={startAnalysis} disabled={scanning}>
-                      {scanning ? <RefreshCw size={18} className="spinning-sync-loader" /> : <Search size={18} />} 
-                      {scanning ? "Processing Weights..." : "Execute Forensic Pass"}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="terminal-logs-wrapper">
-              <div className="terminal-logs">
-                {logs.map((log, i) => (
-                  <div key={i} className={`log-line ${log.includes('[SUCCESS]') ? 'log-success' : log.includes('[PROCESSING]') ? 'log-process' : log.includes('[METADATA]') ? 'log-meta' : ''}`}>
-                    {log}
-                  </div>
-                ))}
-                {logs.length === 0 && <div className="log-placeholder">Awaiting target asset ingestion sequence activation code vectors...</div>}
-                <div ref={terminalEndRef} />
-              </div>
-            </div>
-          </div>
-
-          <div className="scanner-monitor">
-             <div className="monitor-screen">
-                <div className="scan-grid-lines"></div>
-                
-                {scanning ? (
-                  <div className="active-scan-ui">
-                    <div className="scanning-radar-glow"></div>
-                    <Radar className="radar-icon-anim" size={54} />
-                    <h3 className="scanning-step-title">{currentStep}</h3>
-                    <div className="progress-metrics-row">
-                      <span className="telemetry-label">MATRIX INTEGRATION:</span>
-                      <span className="progress-value">{Math.round(progress)}% Complete</span>
-                    </div>
-                    <div className="loading-bar-outer">
-                        <div className="loading-bar-inner" style={{width: `${progress}%`}}></div>
-                    </div>
-                    <div className="running-sub-logs">
-                      <span>[LOG]: Active Thread Pool Allocation: CUDA_NODE_0{1}</span>
-                      <span>[VECTORS]: Real-time floating calculation rate ~4.82 TFLOPS</span>
-                    </div>
-                  </div>
-                ) : showResults ? (
-                  <div className="results-dashboard">
-                    <div className="res-header">
-                      <ShieldAlert className="text-red animate-pulse-slow" size={24} />
-                      <div>
-                        <h3>Synthetic Anomalies Flagged</h3>
-                        <p className="res-subtitle">Confidence Interval Verdict Overload Triggered</p>
-                      </div>
-                    </div>
-                    
-                    <div className="res-tabs">
-                       <button className={activeTab === 'summary' ? 'active' : ''} onClick={() => setActiveTab('summary')}><FileText size={14}/> Operational Summary</button>
-                       <button className={activeTab === 'technical' ? 'active' : ''} onClick={() => setActiveTab('technical')}><Server size={14}/> Deep Neural Weights Data</button>
-                    </div>
-
-                    <div className="tab-pane">
-                      {activeTab === 'summary' ? (
-                        <div className="summary-view">
-                          <div className="score-flex-container">
-                            <div className="risk-score-circle">
-                               <svg viewBox="0 0 36 36" className="circular-chart critical-red">
-                                  <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                  <path className="circle" strokeDasharray="87, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                               </svg>
-                               <div className="percentage">87.42%</div>
-                            </div>
-                            <div className="score-verdict-text">
-                              <h4>Verdict: High Risk Model Manipulation</h4>
-                              <p>Structural elements point to algorithmic generation vectors matched closely with StyleGAN3 image generator footprints.</p>
-                            </div>
-                          </div>
-                          
-                          <div className="findings">
-                             <div className="finding-pill danger">
-                               <Smile size={14} className="pill-ico"/> 
-                               <span><strong>Smile Reconstruction:</strong> Localized pixel boundary discontinuities detected along lip landmark mappings.</span>
-                             </div>
-                             <div className="finding-pill warning">
-                               <Eye size={14} className="pill-ico"/> 
-                               <span><strong>Asymmetry Identified:</strong> Geometric distance values between pupils deviate from standard facial camera projection profiles.</span>
-                             </div>
-                             <div className="finding-pill success">
-                               <Sparkle size={14} className="pill-ico"/> 
-                               <span><strong>EXIF Consistency Verified:</strong> Internal data headers contain uniform quantization tables matched with native device configurations.</span>
-                             </div>
-                          </div>
+            ) : (
+              <div className="compare-container animate-fade">
+                 <div className="compare-grid-v3">
+                  <div className="compare-slot">
+                    <h4>Source Profile (Original Reference)</h4>
+                    <div className="mini-drop-v3" onClick={() => document.getElementById('up-orig').click()}>
+                      <input type="file" id="up-orig" hidden onChange={(e) => handleFileUpload(e, 'original')} accept="image/*" />
+                      {compareData.original ? (
+                        <div className="inner-preview">
+                          <img src={compareData.original} alt="Original Reference" />
+                          <span>{compareData.originalName}</span>
                         </div>
-                      ) : (
-                        <div className="technical-view">
-                          <div className="tech-readout-meta">
-                            <span>[HARDWARE INTERPOLATION INTEL LOGS]</span>
-                            <span>COMPUTE TIER: HIGH_ACCURACY_INF</span>
-                          </div>
-                          <code className="code-block">
-                            {`> NEURAL_DASHBOARD_SCAN_VERDICT: POSITIVE ALTERATION
-> GAN_SIGNATURE_FOOTPRINT_MATCH: STYLEGAN_3_HD_v2 [CONFIDENCE 91%]
-> FRAUDULENT_ELA_DENSITY_LEVEL: 0.9248 (CRITICAL OVERRIDE THRESHOLD)
-> MESH_FACIAL_LANDMARK_SYNC_COEF: 0.124 (SPATIAL STRUCTURAL FAILED)
-> BINARY_COMPRESSION_DEVIATION: 4.825e-3 DELTA RATE
-> CRYPTO_LEDGER_HASH: SHA256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-> RECORD_TIMESTAMP: ${new Date().toISOString()}`}
-                          </code>
+                      ) : <div className="slot-empty-msg"><Upload size={24}/><span>Ingest Reference</span></div>}
+                    </div>
+                  </div>
+                  <div className="compare-center-icon"><Zap className="pulse-fast" /></div>
+                  <div className="compare-slot">
+                    <h4>Target Profile (Suspicious Matrix)</h4>
+                    <div className="mini-drop-v3" onClick={() => document.getElementById('up-suspect').click()}>
+                      <input type="file" id="up-suspect" hidden onChange={(e) => handleFileUpload(e, 'suspect')} accept="image/*" />
+                      {compareData.suspect ? (
+                        <div className="inner-preview">
+                          <img src={compareData.suspect} alt="Suspicious Target" />
+                          <span>{compareData.suspectName}</span>
                         </div>
-                      )}
-                    </div>
-                    <button className="btn-download-report" onClick={() => alert("Generating Forensic Grade Cryptographic PDF Dossier...\nSHA-256 Checklist Embedded Successfully.")}>
-                      <Download size={16} /> Export Cryptographic Forensic Report Dossier
-                    </button>
-                  </div>
-                ) : (
-                  <div className="monitor-idle">
-                    <Fingerprint size={64} className="idle-glow animate-pulse-slow" />
-                    <h3>System Live & Clear</h3>
-                    <p>Awaiting ingestion protocol injection commands. Link a target image array profile payload in the controller module to begin verification passes.</p>
-                    <div className="live-stat-ticker">
-                      <span className="dot live-green"></span> Core Node Status: Listening for Streams
+                      ) : <div className="slot-empty-msg"><Upload size={24}/><span>Ingest Suspect</span></div>}
                     </div>
                   </div>
-                )}
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Tiers Section */}
-      <section className="pricing-section" id="pricing">
-        <SectionTitle 
-          subtitle="Access & Licensing Frameworks" 
-          title="Forensic Verification Scales for Universal Needs" 
-          description="Whether you are an independent fact-checker defending media pipelines or an enterprise safeguarding transactional databases, we maintain an access vector for your scale."
-        />
-        
-        <div className="pricing-grid">
-           {pricingPlans.map((plan, i) => (
-             <div className={`pricing-card ${plan.highlighted ? 'featured' : ''}`} key={i}>
-                {plan.highlighted && <div className="popular-tag"><Sparkles size={12} style={{marginRight: '4px'}}/> Most Scalable Verification Plan</div>}
-                <div className="card-top-accent"></div>
-                <h3>{plan.name}</h3>
-                <p className="plan-brief-desc">{plan.desc}</p>
-                <div className="price-housing">
-                  <span className="price-currency">{plan.price === 'Custom' ? '' : '$'}</span>
-                  <span className="price-value">{plan.price.replace('$', '')}</span>
-                  <span className="price-period">/ {plan.period}</span>
                 </div>
-                
-                <ul className="plan-features">
-                  {plan.features.map((f, j) => (
-                    <li key={j}>
-                      <CheckCircle2 size={15} className="check-bullet-icon"/> 
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button className={`plan-btn ${plan.highlighted ? 'btn-glow' : ''}`}>{plan.btn}</button>
-             </div>
-           ))}
-        </div>
-      </section>
-
-      {/* Deep Technical Methodology Overview */}
-      <section className="method-section">
-        <div className="method-card">
-           <div className="method-info">
-              <div className="mini-tag"><Key size={12}/> Architecture Framework</div>
-              <h2>Distributed Zero-Knowledge Neural Methodology</h2>
-              <p>TruthLens AI functions via highly secure, isolated operational runtimes. Your source data structure stays private. Image metrics are translated instantly into volatile geometric float hashes within memory buffers, completely eliminating traditional centralized compliance leak footprints.</p>
-              
-              <div className="method-grid">
-                 <div className="m-box">
-                   <div className="m-box-icon-housing"><HardDrive size={22}/></div>
-                   <h4>Isolated Buffer Load</h4>
-                   <p>Data loads directly into local sandboxed system memory maps.</p>
-                 </div>
-                 <div className="m-box">
-                   <div className="m-box-icon-housing"><Share2 size={22}/></div>
-                   <h4>Distributed Weights</h4>
-                   <p>Inference is spread across multi-tenant secure computing arrays.</p>
-                 </div>
-                 <div className="m-box">
-                   <div className="m-box-icon-housing"><Settings size={22}/></div>
-                   <h4>Adaptive Model Training</h4>
-                   <p>Weights receive daily programmatic refinements based on new network forks.</p>
-                 </div>
-                 <div className="m-box">
-                   <div className="m-box-icon-housing"><HelpCircle size={22}/></div>
-                   <h4>Human-in-the-Loop Validation</h4>
-                   <p>Enterprise plans feature secure channels for secondary verification loops.</p>
-                 </div>
+                <button className="btn-scan-action" disabled>Launching Differential Engines...</button>
               </div>
-           </div>
-           
-           <div className="method-stat-card">
-              <div className="glowing-orb-background"></div>
-              <BarChart3 size={48} className="stat-chart-glowing-icon" />
-              <div className="stat-big-number">98.42%</div>
-              <h3>Empirical Verification Accuracy Rate</h3>
-              <p>Rigorously checked against foundational deepfake benchmark suites and hidden synthetic injection models.</p>
-              <div className="stat-divider-line"></div>
-              <div className="sub-stat-row">
-                <span>LATENCY RATE: ~1.4s / MB</span>
-                <span>MODEL SCALE: 1.2B Parameters</span>
-              </div>
-           </div>
-        </div>
-      </section>
+            )}
 
-      {/* Frequently Asked Knowledge Base Section */}
-      <section className="faq-section" id="faq">
-        <SectionTitle 
-          subtitle="System Whitepaper FAQ" 
-          title="Deep Science & Operational Constraints" 
-          description="Unpack the fundamental mathematics, data privacy guidelines, and technical mechanics powering the TruthLens pipeline matrix."
-        />
-        
-        <div className="faq-container-housing">
-          {comprehensiveFaq.map((faq, i) => (
-            <div 
-              className={`faq-accordion-node ${activeFaq === i ? 'node-active' : ''}`} 
-              key={i}
-              onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-            >
-              <div className="faq-node-question-bar">
-                <h4>{faq.q}</h4>
-                <div className="accordion-indicator-icon">
-                  <PlusIcon size={16} style={{ transform: activeFaq === i ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+            {isAnalyzing && (
+              <div className="analysis-overlay">
+                <div className="analysis-status-card">
+                  <Loader2 className="spin-v3-loader" size={54} />
+                  <h3>{currentStep}</h3>
+                  <div className="full-progress">
+                    <div className="fill" style={{width: `${analysisProgress}%`}}></div>
+                  </div>
                 </div>
               </div>
-              <div className="faq-node-answer-panel" style={{ maxHeight: activeFaq === i ? '200px' : '0px', opacity: activeFaq === i ? 1 : 0 }}>
-                <p>{faq.a}</p>
+            )}
+          </div>
+
+          {/* 4. REPORT SECTION */}
+          {showFullReport && scanResult && (
+            <div className="forensic-report-v3 animate-slide-up">
+              <div className="report-v3-header">
+                <div className="report-title">
+                  <FileText className="blue-icon" />
+                  <div>
+                    <h3>Deep Forensic Audit Inspection Report</h3>
+                    <p>System Hash Index: {scanResult.id} • Generated Live</p>
+                  </div>
+                </div>
+                <div className={`status-pill-v3 ${scanResult.risk === 'High' ? 'danger' : scanResult.risk === 'Medium' ? 'warning' : 'safe'}`}>
+                  {scanResult.status}
+                </div>
+              </div>
+
+              <div className="report-v3-body">
+                <div className="report-stats-grid">
+                  <div className="r-stat">
+                    <span>Authenticity Vector Conf.</span>
+                    <h4>{scanResult.score}%</h4>
+                    <div className="mini-bar">
+                      <div style={{
+                        width: `${scanResult.score}%`, 
+                        background: scanResult.score > 75 ? '#10b981' : scanResult.score > 40 ? '#f59e0b' : '#ef4444'
+                      }}></div>
+                    </div>
+                  </div>
+                  <div className="r-stat">
+                    <span>Evaluated Threat Index</span>
+                    <h4 style={{ color: scanResult.risk === 'High' ? '#ef4444' : scanResult.risk === 'Medium' ? '#f59e0b' : '#10b981' }}>
+                      {scanResult.risk} Risk
+                    </h4>
+                  </div>
+                  <div className="r-stat">
+                    <span>Tamper Evidence Flag</span>
+                    <h4>{scanResult.risk === 'High' ? 'CRITICAL DISCOVERY' : scanResult.risk === 'Medium' ? 'MODERATE ANOMALIES' : 'CLEAN MATRIX'}</h4>
+                  </div>
+                </div>
+
+                <div className="report-metadata-sub-block">
+                  <h5>Asset Ingestion Signature Metadata</h5>
+                  <div className="meta-sub-grid">
+                    <div><strong>Detected Device Profile:</strong> {scanResult.metadata.device}</div>
+                    <div><strong>Ingest Point Location:</strong> {scanResult.metadata.location}</div>
+                    <div><strong>Hex Manipulation Log:</strong> {scanResult.metadata.edited}</div>
+                    <div><strong>Timestamp Reference:</strong> {scanResult.timestamp}</div>
+                  </div>
+                </div>
+
+                <div className="report-findings">
+                  <h5>Neural Network Log Observations:</h5>
+                  <ul>
+                    {scanResult.risk === 'High' ? (
+                      <>
+                        <li>Discovered recursive generative artifacts inside facial vector tracking coordinate maps.</li>
+                        <li>High-frequency spatial pixel inconsistencies indicate deep neural pipeline blending steps.</li>
+                        <li>EXIF header structural layouts do not match physical lens distortion parameters.</li>
+                      </>
+                    ) : scanResult.risk === 'Medium' ? (
+                      <>
+                        <li>Light compressed optimization transformations discovered inside quantization layers.</li>
+                        <li>EXIF data flags modifications matching photo editing software layers.</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>Pixel continuity matches natural physical sensor distribution mappings perfectly.</li>
+                        <li>No metadata layer conflicts identified in structure.</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="report-v3-footer">
+                <button className="btn-report-dl" onClick={handleDownloadReport}><Download size={16} /> Export Forensic Report</button>
+                <button className="btn-report-save" onClick={() => alert("Audit log report systematically locked.")}><Save size={16} /> Lock To System History</button>
+                <button className="btn-report-share" onClick={() => alert("Secure transmission token URL copied.")}><Share2 size={16} /> Generate Share Key</button>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </section>
 
-      {/* Forensic Pipeline Global Footer System */}
-      <footer className="footer" id="contact">
-        <div className="footer-top">
-          <div className="footer-brand">
-            <div className="logo"><ShieldCheck className="logo-icon"/> TruthLens <span className="blue-text">AI</span></div>
-            <p>Advancing multi-spectral digital forensic processing engineering for a modern landscape where seeing is no longer fundamentally equivalent to believing.</p>
-            <div className="social-row">
-               <div className="s-circle" aria-label="TruthLens Global Web Link Node"><Globe size={16}/></div>
-               <div className="s-circle" aria-label="System Source Terminal Log Tree"><Terminal size={16}/></div>
-               <div className="s-circle" aria-label="Distributed Security Protocol Sharing Channels"><Share2 size={16}/></div>
+      {/* 5. AUDIT HISTORY LOGS */}
+      <section className="activity-dashboard" id="activity">
+        <div className="container">
+          <div className="dashboard-header">
+            <div>
+              <h2>Global Forensics Audit Log Ledger</h2>
+              <p>Filter, trace, inspect, or purge live security transactions processed by the platform engine cores</p>
+            </div>
+            <div className="dashboard-tools">
+              <div className="search-v3">
+                <Search size={18} />
+                <input 
+                  type="text" 
+                  value={searchTerm}
+                  placeholder="Query Scan ID or Filename File..." 
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-          
-          <div className="footer-links-grid">
-             <div className="link-col">
-                <h4>Analytical Subsystems</h4>
-                <a href="#scanner">Geometric Mesh Scanner</a>
-                <a href="#hero">Neural API Ingestion Portal</a>
-                <a href="#visualize">Hyper-Spectral Heatmaps</a>
-                <a href="#features">EXIF Metadata Evaluators</a>
-             </div>
-             <div className="link-col">
-                <h4>System Documentation</h4>
-                <a href="#faq">Core Operational Whitepapers</a>
-                <a href="#pricing">License Matrix Guides</a>
-                <a href="#hero">Zero-Log Privacy Compliance Logs</a>
-                <a href="#features">CUDA Speed Scaling Profiles</a>
-             </div>
-             <div className="link-col">
-                <h4>Identity Signatures</h4>
-                <p className="footer-contact-item"><UserCheck size={14} className="f-icon-inline"/> Institutional Verified Partners</p>
-                <p className="footer-contact-item"><ShieldAlert size={14} className="f-icon-inline"/> SecOps Urgent Incident Response Team</p>
-                <p className="footer-contact-item"><Server size={14} className="f-icon-inline"/> Host Location Cluster: Node_US_EAST</p>
-             </div>
+
+          <div className="activity-list-v3">
+            <div className="activity-table-head">
+              <span>SCAN TARGET MATRIX FILE</span>
+              <span>CLASSIFICATION TYPE</span>
+              <span>AUTHENTICITY VALUE</span>
+              <span>AUDIT GENERATION TIMESTAMP</span>
+              <span>LEDGER ACTIONS</span>
+            </div>
+            {filteredHistory.length > 0 ? (
+              filteredHistory.map((item) => (
+                <div className="activity-row-v3" key={item.id} onClick={() => handleViewRecord(item)}>
+                  <div className="target-cell">
+                    <div className="target-icon"><ImageIcon size={18}/></div>
+                    <div>
+                      <p className="file-name-v3">{item.name}</p>
+                      <small>HASH: {item.id}</small>
+                    </div>
+                  </div>
+                  <div className="status-cell">
+                    <span className={`pill-v3 ${item.type.toLowerCase()}`}>{item.type}</span>
+                  </div>
+                  <div className="score-cell">
+                    <strong>{item.score}%</strong>
+                  </div>
+                  <div className="date-cell">{item.date || item.timestamp}</div>
+                  <div className="actions-cell">
+                    <button className="icon-btn-v3 view" onClick={(e) => { e.stopPropagation(); handleViewRecord(item); }}><Eye size={17}/></button>
+                    <button className="icon-btn-v3 trash" onClick={(e) => handleDeleteRecord(item.id, e)}><Trash2 size={17}/></button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-ledger-state-msg">
+                <ShieldAlert size={36} />
+                <p>No verified tracking records align with your query selection constraints.</p>
+              </div>
+            )}
           </div>
         </div>
-        
-        <div className="footer-bottom">
-          <p>© 2026 TruthLens AI Forensic Platforms Inc. All Neural Layer Fingerprint Rights Reserved.</p>
-          <div className="uptime-telemetry-badge">
-            <div className="u-dot animate-glow-green"></div> 
-            <span>Verified System Cluster Uptime: <strong>{systemUptime}</strong></span>
+      </section>
+
+      {/* 6. SYSTEM NETWORK ARCHITECTURE */}
+      <section className="architecture-section" id="architecture">
+        <div className="container">
+          <div className="hub-header">
+            <div className="header-icon"><Server /></div>
+            <h2>Distributed System Architecture</h2>
+            <p>Monitored matrix computing parameters across global validation endpoints.</p>
+          </div>
+          <div className="arch-system-grid">
+            <div className="arch-node-status-card">
+              <div className="node-card-header">
+                <Globe size={20} className="node-net-icon" />
+                <h4>Global Decentralized Node Array</h4>
+              </div>
+              <p>Dynamic image ingestion processes split computational matrix calculations into secure processing hashes across isolated regions globally.</p>
+              <div className="mini-node-status-list">
+                <div className="node-status-row"><span className="indicator active"></span><span>Node-Asia-East-1 (Mumbai)</span><strong>98.4% Load</strong></div>
+                <div className="node-status-row"><span className="indicator active"></span><span>Node-EU-Central-2 (Frankfurt)</span><strong>41.2% Load</strong></div>
+              </div>
+            </div>
+            <div className="arch-node-status-card">
+              <div className="node-card-header">
+                <CheckCircle size={20} className="node-net-icon" />
+                <h4>Platform Operational Integrity</h4>
+              </div>
+              <p>The neural engine uses differential scalar algorithms to track discrepancies between generated structural noise fields and typical physical sensors.</p>
+              <div className="arch-progress-stack">
+                <div className="arch-progress-item"><span>GAN Detection Engine</span><div className="progress-track-bar"><div style={{width: '99.4%'}}></div></div></div>
+                <div className="arch-progress-item"><span>EXIF Structural Parser</span><div className="progress-track-bar"><div style={{width: '98.9%'}}></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. REVIEWS */}
+      <section className="reviews-section" id="reviews">
+        <div className="container">
+          <div className="hub-header">
+            <div className="header-icon"><MessageSquare /></div>
+            <h2>Enterprise Field Valuations</h2>
+          </div>
+          <div className="testimonial-slider-box">
+            <div className="testimonial-main-card animate-fade">
+              <div className="stars-row">
+                {[...Array(testimonials[activeReview].rating)].map((_, i) => <Star key={i} size={18} fill="#f59e0b" color="#f59e0b" />)}
+              </div>
+              <p className="testimonial-main-text">"{testimonials[activeReview].text}"</p>
+              <div className="testimonial-profile-author">
+                <strong>{testimonials[activeReview].name}</strong>
+                <span>{testimonials[activeReview].role}, {testimonials[activeReview].org}</span>
+              </div>
+            </div>
+            <div className="slider-navigation-dots-row">
+              {testimonials.map((_, index) => (
+                <button 
+                  key={index} 
+                  className={`slider-nav-dot-btn ${index === activeReview ? 'active' : ''}`}
+                  onClick={() => setActiveReview(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. HOW IT WORKS */}
+      <section className="how-it-works" id="how">
+        <div className="container">
+          <div className="hub-header">
+            <h2>Algorithmic Validation Protocol</h2>
+          </div>
+          <div className="timeline-grid">
+            {[
+              { icon: <Upload />, title: "Secure Ingestion", desc: "Isolates image arrays into memory buffers under SHA-256 validation tokens." },
+              { icon: <Search />, title: "Discrepancy Audit", desc: "Parses meta components, hex structure profiles, and camera model discrepancies." },
+              { icon: <Cpu />, title: "Neural Verification", desc: "Executes deep learning multi-layered matrix evaluations to map synthetic content patterns." },
+              { icon: <FileText />, title: "Cryptographic Reports", desc: "Generates explicit audit verdicts with validation confidence tracking indices." }
+            ].map((step, i) => (
+              <div className="timeline-card" key={i}>
+                <div className="step-num">{i + 1}</div>
+                <div className="step-icon">{step.icon}</div>
+                <h4>{step.title}</h4>
+                <p>{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. LIVE STATS */}
+      <section className="live-stats-v3">
+        <div className="stat-v3-item">
+          <Activity className="stat-v3-icon" />
+          <h3>{(counters.scanned / 1000000).toFixed(4)}M</h3>
+          <p>Forensic Scans Executed</p>
+        </div>
+        <div className="stat-v3-item">
+          <ShieldAlert className="stat-v3-icon" />
+          <h3>{counters.deepfakes.toLocaleString()}</h3>
+          <p>Synthetic Exploits Neutralized</p>
+        </div>
+        <div className="stat-v3-item">
+          <Globe className="stat-v3-icon" />
+          <h3>142</h3>
+          <p>Global Verification Endpoints</p>
+        </div>
+      </section>
+
+      {/* 10. FOOTER */}
+      <footer className="footer-v3">
+        <div className="footer-v3-top">
+          <div className="footer-v3-brand">
+            <div className="nav-brand">
+              <ShieldCheck className="logo-svg" />
+              <h1>AI VISION <span>GUARD</span></h1>
+            </div>
+            <p>The global system authority for tracking deepfakes and digital media alterations. Trusted across security platforms and multi-region legal systems.</p>
+          </div>
+          <div className="footer-v3-links">
+            <div className="link-col">
+              <h4>Platform Engines</h4>
+              <a href="#analysis">Neural Scan Center</a>
+              <a href="#architecture">API Gateway Node</a>
+            </div>
+            <div className="link-col">
+              <h4>Technical Specs</h4>
+              <a href="#home">Core Engine Models</a>
+              <a href="#reviews">Case Verification</a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-v3-bottom">
+          <p>© 2026 AI Vision Guard Core. Forensic Security Matrix Division.</p>
+          <div className="social-tray">
+            <button className="soc-btn">GitHub Enterprise</button>
+            <button className="soc-btn">Secure Matrix Link</button>
           </div>
         </div>
       </footer>
-
-      {/* Global Foreground Modal Scan Overlay Interface */}
-      {scanning && (
-        <div className="global-neural-overlay">
-           <div className="brain-container-box">
-              <div className="brain-core-glowing">
-                <Brain size={64} className="pulse-glowing-icon" />
-              </div>
-              <div className="sonic-wave sw1"></div>
-              <div className="sonic-wave sw2"></div>
-              <div className="sonic-wave sw3"></div>
-           </div>
-           <h2>{currentStep}</h2>
-           <div className="phase-indicator-pill">
-             <span>EXECUTING CORRELATION CORE PROCESS PHASE {Math.min(6, Math.ceil((progress / 100) * analysisSteps.length))} OF {analysisSteps.length}</span>
-           </div>
-           <div className="global-overlay-bar-outer">
-             <div className="global-overlay-bar-inner" style={{ width: `${progress}%` }}></div>
-           </div>
-           <p className="global-overlay-warning-notice">Do not interrupt secure network uplink sockets during data matrix correlation routines.</p>
-        </div>
-      )}
     </div>
   );
-}
+};
+
+export default Home;
