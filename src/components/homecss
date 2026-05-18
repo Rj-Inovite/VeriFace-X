@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SYSTEM CORE VARIABLES (:root)
+   0. GRAPHIC SYSTEM VARIABLES & DESIGN TOKENS
    ========================================================================== */
 :root {
   --navy-darkest: #040814;
@@ -62,69 +62,6 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 2rem;
-}
-
-/* ==========================================================================
-   NEW: TOP HD VIDEO BANNER WITH TEXT ANIMATION (No Filters, Overlays, or Blurs)
-   ========================================================================== */
-.top-video-banner {
-  width: 100%;
-  height: auto;
-  min-height: 400px;
-  background-color: #ffffff; /* Dedicated pure white background */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 120px var(--container-padding, 5%) 40px var(--container-padding, 5%); /* Top padding prevents Navbar overlap */
-  box-sizing: border-box;
-  overflow: hidden;
-  gap: 30px;
-  position: relative;
-  z-index: 10;
-}
-
-.banner-video-container {
-  flex: 1;
-  max-width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.clear-hd-video {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  filter: none !important; /* Zero shading filters or color modifications */
-  backdrop-filter: none !important;
-}
-
-.banner-text-side {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 20px;
-}
-
-.animated-banner-text {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #000000; /* Crisp solid black typography */
-  margin: 0;
-  font-family: var(--font-cyber);
-  opacity: 0;
-  transform: translateX(-30px);
-  animation: slideInText 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideInText {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 /* ==========================================================================
@@ -298,7 +235,7 @@ body {
   min-height: 95vh;
   display: flex;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 80px;
   overflow: hidden;
 }
 
@@ -355,6 +292,7 @@ body {
 .hero-content-v3 {
   position: relative;
   z-index: 2;
+
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
@@ -486,7 +424,7 @@ body {
 }
 
 /* ==========================================================================
-   4. VISUAL RENDER CARD BOX (RIGHT HERO PANEL) & SQUARE CAROUSEL INTERFACE
+   4. VISUAL RENDER CARD BOX (RIGHT HERO PANEL)
    ========================================================================== */
 .main-visual-box {
   position: relative;
@@ -510,36 +448,6 @@ body {
 @keyframes visualPulse {
   0%, 100% { transform: scale(1); opacity: 0.15; }
   50% { transform: scale(1.05); opacity: 0.25; }
-}
-
-/* NEW: INTEGRATED HERO PREVIEW CAROUSEL SQUARE ELEMENTS */
-.square-carousel-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  aspect-ratio: 1 / 1;
-  background: #090e1a;
-  opacity: 1 !important;
-  animation: none !important;
-}
-
-.carousel-square-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  z-index: 1;
-}
-
-.carousel-square-frame.visible {
-  opacity: 0.35; /* Blends neatly inside the matrix aesthetic */
-  z-index: 2;
 }
 
 .scanning-bar {
@@ -614,7 +522,6 @@ body {
   max-width: 260px;
   backdrop-filter: blur(15px);
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-  z-index: 6;
 }
 
 .alert-icon {
@@ -1814,21 +1721,6 @@ body {
 @media (max-width: 768px) {
   .container { padding: 0 1.25rem; }
   
-  .top-video-banner {
-    flex-direction: column-reverse;
-    padding: 100px 20px 30px 20px;
-  }
-  .banner-video-container, .banner-text-side {
-    max-width: 100%;
-    flex: none;
-    padding: 0;
-  }
-  .animated-banner-text {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
   .menu-btn {
     display: block;
     z-index: 1100;

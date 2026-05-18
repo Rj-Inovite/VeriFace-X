@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-
 import "./Navbar.css";
-import { FaHome } from "react-icons/fa";
+import { ShieldCheck } from "lucide-react"; // Swapped to a security shield icon to fit TruthLens
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -9,7 +8,7 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -17,20 +16,23 @@ function Navbar() {
 
   return (
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-      {/* Logo */}
+      {/* Left-aligned Logo */}
       <div className="navbar-logo">
-        <FaHome className="logo-icon" />
-        <span className="logo-text">TruthLens AI</span>
+        <ShieldCheck className="logo-icon" />
+        <span className="logo-text">TruthLens <span className="logo-accent">AI</span></span>
       </div>
 
-      {/* Center Home Link */}
+      {/* Centered Navigation Links */}
       <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
         <li>
-          <a href="#home" className="nav-item">Home</a>
+          <a href="#home" className="nav-item" onClick={() => setMenuOpen(false)}>Home</a>
+        </li>
+        <li>
+          <a href="#report" className="nav-item" onClick={() => setMenuOpen(false)}>Report</a>
         </li>
       </ul>
 
-      {/* Right Side Actions */}
+      {/* Right Side Action Button & Mobile Burger */}
       <div className="nav-actions">
         <button className="btn start">Explore</button>
         <div

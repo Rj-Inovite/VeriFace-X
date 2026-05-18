@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
 import { 
-  Upload, Search, FileText, Loader2, Download,
-  Zap, Layers, Eye, ShieldAlert,
+  ShieldCheck, Upload, Search, FileText, Loader2, Download,
+  Zap, Menu, X, Layers, Eye, ShieldAlert,
   Cpu, Image as ImageIcon,
   Share2, Save, Trash2, Activity, Globe,
   Star, MessageSquare, CheckCircle, Server,
 } from 'lucide-react';
-import Navbar from './Navbar';
-import bannerVideo from '../assets/images/banner.mp4';
 import './Home.css';
 
 const Home = () => {
   // ==========================================
   // UI & NAVIGATION STATE
   // ==========================================
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('upload'); // 'upload' | 'compare'
+  const [isScrolled, setIsScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
 
   // ==========================================
   // IMAGE CAROUSEL STATE
@@ -31,7 +32,7 @@ const Home = () => {
   // ANALYSIS & FILE STATE
   // ==========================================
   const [singleFile, setSingleFile] = useState(null); // Preview URL
-  const [rawFile, setRawFile] = useState(null);        // Actual File object for Django
+  const [rawFile, setRawFile] = useState(null);       // Actual File object for Django
   const [singleFileName, setSingleFileName] = useState("");
   const [compareData, setCompareData] = useState({ original: null, suspect: null, originalName: "", suspectName: "" });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -81,6 +82,12 @@ const Home = () => {
   }, [carouselImages.length]);
 
   useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     const counterTimer = setInterval(() => {
       setCounters(prev => ({
         ...prev,
@@ -102,6 +109,7 @@ const Home = () => {
     setAnalysisProgress(0);
     setShowFullReport(false);
 
+    // 1. Visual Progress Simulation
     let progress = 0;
     const progressInterval = setInterval(() => {
       progress += 2;
@@ -112,6 +120,7 @@ const Home = () => {
       }
     }, 50);
 
+    // 2. Prepare Payload
     const formData = new FormData();
     formData.append('image', rawFile);
     formData.append('file_name', singleFileName);
@@ -131,6 +140,7 @@ const Home = () => {
         setCurrentStep("Finalizing Security Audits...");
 
         setTimeout(() => {
+          // Map Django response to Frontend Result Schema
           const result = {
             id: data.system_hash || `TL-${Math.floor(Math.random() * 9000) + 1000}`,
             name: data.file_name || singleFileName,
@@ -157,10 +167,12 @@ const Home = () => {
         setIsAnalyzing(false);
       }
     } catch {
+
       clearInterval(progressInterval);
       alert("Connection Refused: Ensure Django server is running on port 8000.");
       setIsAnalyzing(false);
     }
+
   };
 
   // ==========================================
@@ -253,32 +265,55 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
   };
 
   const filteredHistory = history.filter(item => {
-    return item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.id.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
   });
 
+  // ==========================================
+  // RENDER COMPONENT
+  // ==========================================
   return (
     <div className="app-wrapper">
-      <Navbar />
+      {/* 1. INTERACTIVE NAVBAR */}
+      <nav className={`nav-v3 ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="nav-inner">
+          <div className="nav-brand">
+            <div className="logo-hex">
+              <ShieldCheck className="logo-svg" />
+            </div>
+            <div className="brand-text">
+              <h1>AI VISION <span>GUARD</span></h1>
+              <small>Neural Forensic Intel v4.5</small>
+            </div>
+          </div>
 
-      {/* NEW: TOP HD VIDEO BANNER WITH TEXT ANIMATION */}
-      <section className="top-video-banner">
-        <div className="banner-video-container">
-          <video 
-            className="clear-hd-video" 
-            src={bannerVideo} 
-            autoPlay 
-            muted 
-            loop 
-            playsInline 
-          />
-        </div>
-        <div className="banner-text-side">
-          <h1 className="animated-banner-text">See What AI Sees in You</h1>
-        </div>
-      </section>
+          <div className={`nav-links-box ${isMenuOpen ? 'open' : ''}`}>
+            <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+            <a href="#analysis" onClick={() => setIsMenuOpen(false)}>Analysis Hub</a>
+            <a href="#activity" onClick={() => setIsMenuOpen(false)}>Audit Logs</a>
+            <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Case Studies</a>
+            <a href="#architecture" onClick={() => setIsMenuOpen(false)}>Nodes</a>
+          </div>
 
-      {/* MAIN HERO FORENSIC VIEW */}
+          <div className="nav-actions-desktop">
+            <button className="nav-btn-sec">Terminal Login</button>
+            <button className="nav-btn-pri" onClick={() => document.getElementById('analysis').scrollIntoView({ behavior: 'smooth' })}>Start Scan</button>
+            <button className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* 2. HERO BANNER */}
       <header className="hero-v3" id="home">
+        {carouselImages.map((imgUrl, idx) => (
+          <div 
+            key={idx}
+            className={`hero-carousel-slide ${idx === currentBgIndex ? 'active' : ''}`}
+            style={{ backgroundImage: `linear-gradient(to right, rgba(10, 15, 30, 0.92), rgba(10, 15, 30, 0.75)), url(${imgUrl})` }}
+          />
+        ))}
         <div className="hero-grid-bg"></div>
         <div className="hero-content-v3">
           <div className="hero-left">
@@ -305,19 +340,9 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
           <div className="hero-right">
             <div className="main-visual-box">
               <div className="scanning-bar"></div>
-              
-              {/* DISPLAYING CAROUSEL IMAGES CLEARLY INSIDE THE SQUARE BLOCK */}
-              <div className="placeholder-img-v3 square-carousel-container">
-                {carouselImages.map((imgUrl, idx) => (
-                  <img 
-                    key={idx}
-                    src={imgUrl} 
-                    alt={`Forensic Matrix Sample ${idx}`} 
-                    className={`carousel-square-frame ${idx === currentBgIndex ? 'visible' : ''}`}
-                  />
-                ))}
+              <div className="placeholder-img-v3">
+                <ImageIcon size={90} className="faded-icon" />
               </div>
-
               <div className="floating-ui-card">
                 <ShieldAlert className="alert-icon" />
                 <div>
@@ -331,7 +356,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </header>
 
-      {/* ANALYSIS HUB */}
+      {/* 3. ANALYSIS HUB */}
       <section className="analysis-hub" id="analysis">
         <div className="container">
           <div className="hub-header">
@@ -421,7 +446,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
             )}
           </div>
 
-          {/* REPORT SECTION */}
+          {/* 4. REPORT SECTION */}
           {showFullReport && scanResult && (
             <div className="forensic-report-v3 animate-slide-up">
               <div className="report-v3-header">
@@ -505,7 +530,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-      {/* AUDIT HISTORY LOGS */}
+      {/* 5. AUDIT HISTORY LOGS */}
       <section className="activity-dashboard" id="activity">
         <div className="container">
           <div className="dashboard-header">
@@ -567,7 +592,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-      {/* SYSTEM NETWORK ARCHITECTURE */}
+      {/* 6. SYSTEM NETWORK ARCHITECTURE */}
       <section className="architecture-section" id="architecture">
         <div className="container">
           <div className="hub-header">
@@ -602,7 +627,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-      {/* REVIEWS */}
+      {/* 7. REVIEWS */}
       <section className="reviews-section" id="reviews">
         <div className="container">
           <div className="hub-header">
@@ -633,7 +658,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* 8. HOW IT WORKS */}
       <section className="how-it-works" id="how">
         <div className="container">
           <div className="hub-header">
@@ -657,7 +682,7 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-      {/* LIVE STATS */}
+      {/* 9. LIVE STATS */}
       <section className="live-stats-v3">
         <div className="stat-v3-item">
           <Activity className="stat-v3-icon" />
@@ -676,7 +701,37 @@ Distributed Under Zero Log Infrastructure Policy. Secure Validation Key.
         </div>
       </section>
 
-    
+      {/* 10. FOOTER */}
+      <footer className="footer-v3">
+        <div className="footer-v3-top">
+          <div className="footer-v3-brand">
+            <div className="nav-brand">
+              <ShieldCheck className="logo-svg" />
+              <h1>AI VISION <span>GUARD</span></h1>
+            </div>
+            <p>The global system authority for tracking deepfakes and digital media alterations. Trusted across security platforms and multi-region legal systems.</p>
+          </div>
+          <div className="footer-v3-links">
+            <div className="link-col">
+              <h4>Platform Engines</h4>
+              <a href="#analysis">Neural Scan Center</a>
+              <a href="#architecture">API Gateway Node</a>
+            </div>
+            <div className="link-col">
+              <h4>Technical Specs</h4>
+              <a href="#home">Core Engine Models</a>
+              <a href="#reviews">Case Verification</a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-v3-bottom">
+          <p>© 2026 AI Vision Guard Core. Forensic Security Matrix Division.</p>
+          <div className="social-tray">
+            <button className="soc-btn">GitHub Enterprise</button>
+            <button className="soc-btn">Secure Matrix Link</button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

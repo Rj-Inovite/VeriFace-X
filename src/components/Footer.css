@@ -3,7 +3,7 @@
   position: relative;
   overflow: hidden;
   padding: 120px 7% 40px;
-  background: #ffffff;
+  background: hsl(0, 0%, 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.6);
 }
 
@@ -18,9 +18,9 @@
   border-radius: 50%;
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.25),
-    rgba(139, 92, 246, 0.25),
-    rgba(236, 72, 153, 0.2)
+    #05173340,
+    rgba(255, 255, 255, 0.25),
+    #fffdfe
   );
   filter: blur(120px);
   z-index: 0;
@@ -37,7 +37,7 @@
 .footer-particle.one {
   width: 20px;
   height: 20px;
-  background: #3b82f6;
+  background: hsl(0, 0%, 100%);
   left: 10%;
   top: 20%;
 }
@@ -45,7 +45,7 @@
 .footer-particle.two {
   width: 15px;
   height: 15px;
-  background: #8b5cf6;
+  background: hsl(264, 100%, 99%);
   right: 15%;
   top: 35%;
 }
@@ -53,7 +53,7 @@
 .footer-particle.three {
   width: 25px;
   height: 25px;
-  background: #ec4899;
+  background: hsl(330, 100%, 100%);
   left: 50%;
   bottom: 15%;
 }
@@ -137,7 +137,7 @@
 
 .footer-socials a:hover {
   transform: translateY(-8px);
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, #fdfdfd, #f7f5fd);
   color: white;
 }
 

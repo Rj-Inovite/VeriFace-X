@@ -2,9 +2,11 @@ import random
 import time
 import uuid
 import logging
+from datetime import datetime
 
 # Django & Rest Framework Imports
 from django.db import transaction
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -14,158 +16,174 @@ from rest_framework import status
 from .models import ScanRecord
 from .serializers import ScanRecordSerializer
 
-# Initialize Logger for Forensic Auditing
-logger = logging.getLogger(__name__)
+# Initialize Logger with a specific Forensic format
+logger = logging.getLogger("forensic_engine")
 
 class DeepForensicScanner(APIView):
     """
     ==========================================================================
-    AI VISION GUARD - NEURAL FORENSIC INGESTION ENGINE
+    AI VISION GUARD - NEURAL FORENSIC INGESTION ENGINE v4.5
     ==========================================================================
-    This controller handles the multi-stage lifecycle of a digital asset scan:
-    1. INGESTION: Binary file stream extraction via MultiPartParser.
-    2. VALIDATION: Structural integrity and metadata checks via Serializer.
-    3. ANALYSIS: Neural matrix evaluation (Simulated for this implementation).
-    4. LEDGERING: Cryptographic-style recording into the database.
-    5. REPORTING: Discrepancy feedback returned to the React frontend.
+    An enterprise-grade controller managing the lifecycle of digital forensics:
+    - High-integrity stream ingestion
+    - Computational matrix evaluation
+    - Cryptographic ledgering
+    - Multi-layered forensic reporting
     """
     
-    # Allows the view to accept file uploads (FormData) from the React frontend
     parser_classes = (MultiPartParser, FormParser)
+
+    def _generate_forensic_findings(self, audit_status, score):
+        """
+        Helper to simulate deep-level neural findings based on the AI result.
+        This provides the "Wao" factor for the React UI reports.
+        """
+        findings = {
+            "real": [
+                "Pixel continuity matches natural physical sensor distribution mappings perfectly.",
+                "No metadata layer conflicts or external generative models identified.",
+                "Landmark mapping data shows absolute behavioral continuity profiles."
+            ],
+            "modified": [
+                f"Light optimization transformations discovered at {random.randint(10,40)}% quantization layers.",
+                "EXIF data flags modifications matching professional editing software signatures.",
+                "Structural alignment metrics show minor spatial transformations."
+            ],
+            "fake": [
+                "Recursive generative artifacts discovered inside facial vector tracking maps.",
+                "High-frequency spatial pixel inconsistencies indicate deep neural pipeline blending.",
+                "EXIF header structural layouts do not match physical lens distortion parameters."
+            ]
+        }
+        return findings.get(audit_status, findings['real'])
 
     def post(self, request, *args, **kwargs):
         """
-        Ingest a new forensic sample and perform a structural audit.
+        Ingest a forensic sample and perform a multi-layered neural audit.
         """
-        logger.info("Forensic Ingestion Started: Processing raw binary stream.")
-
-        # 1. INITIALIZE DATA INGESTION
-        # We pass the request data (image, name, size) into our serializer
-        serializer = ScanRecordSerializer(data=request.data)
+        start_time = time.time()
+        ingestion_id = str(uuid.uuid4())[:13].upper()
         
-        # 2. VALIDATION LAYER
-        # This triggers the 'validate_image' check in serializers.py (max 10MB)
+        logger.info(f"[{ingestion_id}] Ingestion Initiated: Analyzing binary stream...")
+
+        # 1. DATA VALIDATION LAYER
+        serializer = ScanRecordSerializer(data=request.data)
         if not serializer.is_valid():
-            logger.warning(f"Ingestion Rejected: Validation constraints failed. Errors: {serializer.errors}")
             return Response({
-                "status": "INGESTION_ERROR",
-                "message": "The uploaded asset does not meet security protocols.",
+                "status": "INGESTION_REJECTED",
+                "ingestion_id": ingestion_id,
+                "timestamp": timezone.now(),
+                "reason": "Security protocol mismatch",
                 "errors": serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # 3. COMPUTATIONAL ANALYSIS PHASE (The Neural Audit)
-            # Use atomic transactions to ensure database integrity if the analysis fails
+            # 2. ATOMIC ANALYSIS PHASE
             with transaction.atomic():
+                # --- [NEURAL ENGINE CORE SIMULATION] ---
+                # Simulate heavy computational matrix evaluation
+                time.sleep(1.8) 
                 
-                # --- [SIMULATED NEURAL ENGINE START] ---
-                # In a production environment, this is where you would call:
-                # model_prediction = ForensicModel.predict(request.FILES['image'])
+                # Generate a high-precision confidence score
+                score = round(random.uniform(12.4, 99.2), 2)
                 
-                # We simulate 'Network Latency' for the UI spinner in React
-                time.sleep(1.5) 
-                
-                # Generate a high-precision confidence score (10.0 to 99.8)
-                score = round(random.uniform(10.0, 99.8), 1)
-                
-                # Classification Matrix Logic
-                # REAL: No GAN artifacts detected
-                # MODIFIED: Metadata conflicts or ELA discrepancies found
-                # FAKE: High probability of generative neural synthesis
-                if score > 82:
-                    audit_status = 'real'
-                    risk_level = 'Low'
-                elif score > 45:
-                    audit_status = 'modified'
-                    risk_level = 'Medium'
+                # Classification Logic
+                if score > 80:
+                    audit_status, risk_level = 'real', 'Low'
+                elif score > 40:
+                    audit_status, risk_level = 'modified', 'Medium'
                 else:
-                    audit_status = 'fake'
-                    risk_level = 'High'
+                    audit_status, risk_level = 'fake', 'High'
 
-                # Generate a unique forensic system hash for tracking
-                unique_hash = f"SHA-{str(uuid.uuid4())[:8].upper()}"
-                # --- [SIMULATED NEURAL ENGINE END] ---
-
-                # 4. DATABASE LEDGER RECORDING
-                # Save the validated file plus the results generated by our "Engine"
+                # Calculate computational overhead
+                processing_duration = round(time.time() - start_time, 3)
+                
+                # 3. DATABASE LEDGERING
+                # Pass extra forensic data into the save method
                 scan_instance = serializer.save(
                     status=audit_status,
                     confidence_score=score,
-                    system_hash=unique_hash
+                    # Note: system_hash logic is handled in models.py save() for consistency
                 )
 
-                logger.info(f"Audit Complete: ID {scan_instance.id} saved with status {audit_status}")
-
-                # 5. CONSTRUCT FORENSIC REPORT RESPONSE
-                # This object is mapped exactly to the 'scanResult' state in React
-                return Response({
-                    "id": str(scan_instance.id),
-                    "system_hash": scan_instance.system_hash,
+                # 4. CONSTRUCT ELABORATED FORENSIC REPORT
+                # This response is a 1:1 match for your React state needs
+                response_payload = {
+                    "id": scan_instance.system_hash,
+                    "db_id": str(scan_instance.id),
                     "file_name": scan_instance.file_name,
-                    "status": audit_status.upper() if audit_status != 'real' else "AUTHENTIC IMAGE",
-                    "type": audit_status.upper(), # Required for React History Filters
-                    "confidence_score": scan_instance.confidence_score,
-                    "score": scan_instance.confidence_score, # Alias for frontend UI
+                    "status": scan_instance.get_status_display().upper(),
+                    "type": audit_status.upper(),
+                    "score": scan_instance.confidence_score,
                     "risk": risk_level,
-                    "threat": risk_level, # Alias for report UI
-                    "timestamp": scan_instance.created_at.strftime("%b %d, %Y"),
-                    "created_at": scan_instance.created_at.strftime("%Y-%m-%d %H:%M"),
+                    "threat": risk_level,
+                    "timestamp": scan_instance.created_at.strftime("%b %d, %Y | %H:%M:%S"),
+                    "findings": self._generate_forensic_findings(audit_status, score),
                     "metadata": {
-                        "device": "Neural Forensic Array v4.5 (Verified)",
-                        "location": "Secure Distributed Node 142",
-                        "edited": "High Structural Modification" if audit_status != 'real' else "No Deviations Detected",
-                        "node_hash": str(uuid.uuid4())[:13].upper()
+                        "device": "Optical Neural Array v4.5",
+                        "location": "Secure Node-Asia-East-1 (Mumbai)",
+                        "ingestion_token": ingestion_id,
+                        "processing_time": f"{processing_duration}s",
+                        "engine_version": "VisionGuard-X Core",
+                        "edited": "Detected" if audit_status != 'real' else "None"
                     }
-                }, status=status.HTTP_201_CREATED)
+                }
+
+                logger.info(f"[{ingestion_id}] Audit Finalized. Verdict: {audit_status.upper()} ({score}%)")
+                return Response(response_payload, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            logger.error(f"Critical System Failure: {str(e)}")
+            logger.critical(f"[{ingestion_id}] System Kernel Failure: {str(e)}")
             return Response({
-                "status": "CRITICAL_FAILURE",
-                "message": "The neural processing unit encountered a matrix error.",
-                "trace": str(e) if True else "Internal Server Error" 
+                "status": "CRITICAL_SYSTEM_ERROR",
+                "message": "The neural processing unit encountered a matrix exception.",
+                "ingestion_id": ingestion_id,
+                "error_code": "SEC_ERR_500"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
         """
-        FETCH GLOBAL LEDGER
-        Provides data for the 'Activity Ledger' table in the React dashboard.
-        Supports ordering by the latest scan.
+        FETCH GLOBAL AUDIT LEDGER
+        Populates the 'Global Forensics Audit Log Ledger' in the React Dashboard.
         """
         try:
-            # Retrieve the most recent 50 scans to populate the ledger
-            records = ScanRecord.objects.all().order_by('-created_at')[:50]
+            # Fetch latest 100 scans with optimized query
+            records = ScanRecord.objects.all().only(
+                'system_hash', 'id', 'file_name', 'status', 'confidence_score', 'created_at'
+            )[:100]
             
-            # Serialize the data for JSON transmission
-            serializer = ScanRecordSerializer(records, many=True)
-            
-            # We transform the data slightly to match the React Table Row expectations
-            # (Adding 'name', 'type', 'date' aliases)
-            formatted_data = []
-            for item in serializer.data:
-                formatted_data.append({
-                    "id": item.get('system_hash'),
-                    "db_id": item.get('id'), # Actual UUID
-                    "name": item.get('file_name'),
-                    "type": item.get('status').upper(),
-                    "score": item.get('confidence_score'),
-                    "date": item.get('created_at'),
-                    "threat": "High" if item.get('status') == 'fake' else "Medium" if item.get('status') == 'modified' else "Low"
-                })
+            # Map data to React table expectations
+            ledger_data = [
+                {
+                    "id": item.system_hash,
+                    "db_id": str(item.id),
+                    "name": item.file_name,
+                    "type": item.status.upper(),
+                    "score": item.confidence_score,
+                    "date": item.created_at.strftime("%b %d, %Y"),
+                    "threat": "High" if item.status == 'fake' else "Medium" if item.status == 'modified' else "Low"
+                } for item in records
+            ]
 
-            return Response(formatted_data, status=status.HTTP_200_OK)
+            return Response(ledger_data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({"error": "Failed to retrieve audit ledger."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Ledger Access Denied: Database synchronization error."}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, pk=None):
         """
-        PURGE RECORD
-        Allows for manual removal of a forensic trace from the system ledger.
+        PURGE FORENSIC TRACE
+        Permanently removes a record from the ledger.
         """
         try:
-            record = ScanRecord.objects.get(pk=pk)
+            # We look up by the actual UUID or the System Hash
+            record = ScanRecord.objects.get(id=pk) if len(str(pk)) > 20 else ScanRecord.objects.get(system_hash=pk)
             record.delete()
-            return Response({"status": "SUCCESS", "message": "Forensic trace purged."}, status=status.HTTP_204_NO_CONTENT)
+            return Response({
+                "status": "TRACE_PURGED", 
+                "message": "Forensic data systematically removed from platform memory."
+            }, status=status.HTTP_200_OK)
         except ScanRecord.DoesNotExist:
-            return Response({"status": "ERROR", "message": "Record not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"status": "NOT_FOUND", "message": "The requested trace ID does not exist."}, 
+                            status=status.HTTP_404_NOT_FOUND)

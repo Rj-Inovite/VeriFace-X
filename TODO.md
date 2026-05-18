@@ -1,0 +1,5 @@
+- [ ] Add banner video (src/assets/images/banner.mp4) on Home page and autoplay it on top.
+- [ ] Update Home.jsx to import/use the mp4 and render it in hero.
+- [ ] Update Home.css (or add new styles) to ensure video covers hero area (absolute background) with dark overlay and content stays above.
+- [ ] Verify the layout on load (autoplay/muted/loop) and ensure it doesn’t break existing carousel/video background.
+- [ ] (Optional) Handle mobile performance: reduce motion / fallback poster.
