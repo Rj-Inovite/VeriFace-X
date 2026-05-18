@@ -22,3 +22,8 @@
 
 🌐 location
 PS D:\Ruchi\React\Face-scan\Face-scan-python-Ai-automated-prj>
+
+
+
+imp cmd to install 
+"py -m pip install opencv-python numpy pillow tensorflow"
