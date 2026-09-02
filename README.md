@@ -1,7 +1,6 @@
 <p align="center">
   <img src="./assets/banner.png" width="100%" alt="VeriFace-X Banner"/>
 </p>
-# 👁️ VeriFace-X
 
 ### AI Face Forgery Detection Platform
 
