@@ -1,3 +1,19 @@
+<p align="center">
+  <img src="assets/banner.png" width="100%" alt="VeriFace-X Banner"/>
+</p>
+
+<div align="center">
+
+# 👁️ VeriFace-X
+
+### AI Face Forgery Detection Platform
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=22&duration=2500&pause=900&color=60A5FA&center=true&vCenter=true&width=650&lines=Artificial+Intelligence;Computer+Vision;Deep+Learning;TensorFlow+%7C+OpenCV;Flutter+%7C+Django+REST+Framework)](https://git.io/typing-svg)
+
+</div>
+
+---
+
 <div align="center">
 
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=260&color=0:0F172A,35:1D4ED8,70:2563EB,100:38BDF8&text=VERIFACE-X&fontSize=58&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=AI%20Face%20Forgery%20Detection%20Platform&descAlignY=58&descSize=20"/>
