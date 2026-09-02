@@ -1,22 +1,8 @@
-<p align="center">
-  <img src="https://img.magnific.com/free-photo/facial-recognition-software_52683-104208.jpg?semt=ais_hybrid&w=740&q=80" width="100%" alt="VeriFace-X AI Banner"/>
-</p>
-
 <div align="center">
 
-### AI Face Forgery Detection Platform
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:0F172A,35:1D4ED8,70:2563EB,100:38BDF8&text=VERIFACE-X&fontSize=58&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=AI%20Face%20Forgery%20Detection%20Platform&descAlignY=58&descSize=20"/>
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=22&duration=2500&pause=900&color=60A5FA&center=true&vCenter=true&width=650&lines=Artificial+Intelligence;Computer+Vision;Deep+Learning;TensorFlow+%7C+OpenCV;Flutter+%7C+Django+REST+Framework)](https://git.io/typing-svg)
-
-</div>
-
----
-
-<div align="center">
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=260&color=0:0F172A,35:1D4ED8,70:2563EB,100:38BDF8&text=VERIFACE-X&fontSize=58&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=AI%20Face%20Forgery%20Detection%20Platform&descAlignY=58&descSize=20"/>
-
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=23&duration=2500&pause=900&color=60A5FA&center=true&vCenter=true&width=850&lines=Artificial+Intelligence+Project;Computer+Vision+%7C+Deep+Learning;TensorFlow+%7C+OpenCV+%7C+Django;Flutter+%7C+Spring+Boot+Integration;Built+with+%E2%9D%A4%EF%B8%8F+by+Ruchi+Jasmatiya)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=23&duration=2500&pause=900&color=60A5FA&center=true&vCenter=true&width=850&lines=Artificial+Intelligence+Project;Computer+Vision+%7C+Deep+Learning;TensorFlow+%7C+OpenCV+%7C+Django;Flutter+%7C+Spring+Boot+Integration;Built+with+❤️+by+Ruchi+Jasmatiya)](https://git.io/typing-svg)
 
 <p align="center">
 <img src="https://img.shields.io/badge/AI-Machine%20Learning-7C3AED?style=for-the-badge"/>
@@ -51,31 +37,31 @@
 # 🖼️ Project Preview
 
 <p align="center">
-<img width="100%" src="https://images.openai.com/static-rsc-4/AKQrOfUUsABQ0XULrcXVS5w8PecI0G4Lq4XJf3tLwxQOMw2-BDH1ty31ka5X4zuW4g4lWDVCMOO47kMAb-aomTo=rw"/>
+<img width="100%" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80"/>
 </p>
 
-<p align="center"><i>Futuristic AI dashboard • Neural analysis • Deep Learning visualization</i></p>
+<p align="center"><i>AI-powered facial recognition • Neural analysis • Deep Learning</i></p>
 
 ---
 
 # ⚡ AI Workflow
 
 <p align="center">
-<img width="90%" src="https://images.openai.com/static-rsc-4/T0JtPqL0mI0mlfZNBb6L4Z4grlE0lMZ5ieJwYF0kH0M7S4F0M8G5T7M0P2Y5L8T8=rw"/>
+<img width="100%" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1400&q=80"/>
 </p>
 
 ```text
-Upload Image
-      │
-Face Detection
-      │
-Feature Extraction
-      │
-CNN Deep Learning
-      │
-Forgery Classification
-      │
-Confidence Score
+            Upload Image
+                 │
+          Face Detection
+                 │
+       Feature Extraction
+                 │
+      CNN Deep Learning Model
+                 │
+      Forgery Classification
+                 │
+      Confidence Score Output
 ```
 
 ---
@@ -138,7 +124,7 @@ py -m pip install opencv-python numpy pillow tensorflow
 py manage.py createsuperuser
 ```
 
-### Password
+### 🔐 Password
 
 ```text
 Success2026$
@@ -154,11 +140,11 @@ py manage.py runserver
 
 # 🌐 Admin Panel
 
-After starting the server, open:
+Access the Django database dashboard:
 
-## 🔗 http://127.0.0.1:8000/admin/
+## http://127.0.0.1:8000/admin/
 
-Manage users, datasets, AI records, and backend resources from Django Admin.
+Manage users, AI datasets, predictions, and backend resources securely.
 
 ---
 
@@ -212,7 +198,7 @@ VeriFace-X
 # 🔮 Future Roadmap
 
 - 🚀 Live Camera Face Verification
-- 🤖 Generative AI Detection
+- 🤖 Generative AI Deepfake Detection
 - ☁️ Cloud AI Deployment
 - 📱 Android & iOS Release
 - 🔐 Biometric Identity Verification
