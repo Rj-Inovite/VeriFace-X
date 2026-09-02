@@ -1,82 +1,63 @@
 <div align="center">
 
-# 👁️ VeriFace-X
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=260&color=0:0F172A,35:1D4ED8,70:2563EB,100:38BDF8&text=VERIFACE-X&fontSize=58&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=AI%20Face%20Forgery%20Detection%20Platform&descAlignY=58&descSize=20"/>
 
-### AI Face Forgery Detection Platform
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=23&duration=2500&pause=900&color=60A5FA&center=true&vCenter=true&width=850&lines=Artificial+Intelligence+Project;Computer+Vision+%7C+Deep+Learning;TensorFlow+%7C+OpenCV+%7C+Django;Flutter+%7C+Spring+Boot+Integration;Built+with+%E2%9D%A4%EF%B8%8F+by+Ruchi+Jasmatiya)](https://git.io/typing-svg)
 
-AI • Computer Vision • Deep Learning • Mobile & Full Stack
-
-<img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=23&duration=2600&pause=900&color=60A5FA&center=true&vCenter=true&width=700&lines=Artificial+Intelligence;Computer+Vision;Deep+Learning+%7C+TensorFlow;Spring+Boot+%7C+Django+%7C+Flutter;Built+by+Ruchi+Jasmatiya" />
+<p align="center">
+<img src="https://img.shields.io/badge/AI-Machine%20Learning-7C3AED?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Deep-Learning-2563EB?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Computer-Vision-0EA5E9?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white"/>
+<img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white"/>
+<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"/>
+</p>
 
 </div>
 
 ---
 
-<p align="center">
-  <img src="assets/cover.png" width="100%" alt="VeriFace-X Banner"/>
-</p>
+# 🌌 About VeriFace-X
 
-## 🌌 About The Project
+> **VeriFace-X** is an AI-powered Face Forgery Detection Platform that identifies manipulated and AI-generated facial images using **Deep Learning, Computer Vision, TensorFlow, OpenCV, and Django REST Framework**.
 
-**VeriFace-X** is an AI-powered Face Forgery Detection Platform that identifies manipulated and AI-generated facial images using Deep Learning and Computer Vision.
-
-The project combines **TensorFlow**, **OpenCV**, **Django REST Framework**, **Flutter**, and **Spring Boot** to deliver secure and intelligent face analysis.
-
-> ⚡ Detect • Analyze • Classify • Protect
-
----
-
-# ✨ Key Features
+### 🎯 What makes it special?
 
 - 🤖 AI Face Forgery Detection
-- 🧠 Deep Learning CNN Model
+- 🧠 CNN Deep Learning Model
 - 👁️ Computer Vision Pipeline
-- 📷 Image Processing with OpenCV
+- 📷 Real-time Image Analysis
 - 📊 Confidence Score Prediction
-- 🔐 Secure REST APIs
+- 🔐 Django REST APIs
 - 📱 Flutter Mobile Integration
-- 🌐 Django Backend + Admin Panel
+- ☁️ Spring Boot Compatible Architecture
 
 ---
 
-# 🛠️ Tech Stack
-
-| Category | Technologies |
-|----------|--------------|
-| Mobile | Flutter, Dart |
-| Backend | Django, Spring Boot |
-| AI/ML | TensorFlow, OpenCV |
-| Language | Python, Java |
-| Database | SQLite / MySQL |
-| API | Django REST Framework |
-| Tools | Git, GitHub, VS Code |
-
----
-
-# 📸 AI Dashboard
+# 🖼️ Project Preview
 
 <p align="center">
-  <img src="assets/dashboard.png" width="95%" alt="Dashboard"/>
+<img width="100%" src="https://images.openai.com/static-rsc-4/AKQrOfUUsABQ0XULrcXVS5w8PecI0G4Lq4XJf3tLwxQOMw2-BDH1ty31ka5X4zuW4g4lWDVCMOO47kMAb-aomTo=rw"/>
 </p>
 
-Real-time AI dashboard for image analysis and forgery prediction.
+<p align="center"><i>Futuristic AI dashboard • Neural analysis • Deep Learning visualization</i></p>
 
 ---
 
-# ⚙️ System Architecture
+# ⚡ AI Workflow
 
 <p align="center">
-  <img src="assets/architecture.png" width="90%" alt="Architecture"/>
+<img width="90%" src="https://images.openai.com/static-rsc-4/T0JtPqL0mI0mlfZNBb6L4Z4grlE0lMZ5ieJwYF0kH0M7S4F0M8G5T7M0P2Y5L8T8=rw"/>
 </p>
 
-```
-Input Image
+```text
+Upload Image
       │
 Face Detection
       │
 Feature Extraction
       │
-Deep Learning Model
+CNN Deep Learning
       │
 Forgery Classification
       │
@@ -85,19 +66,47 @@ Confidence Score
 
 ---
 
-# 🚀 Installation
+# 🧠 Tech Stack
 
-## 1️⃣ Check Python
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=python,tensorflow,opencv,django,flutter,dart,java,spring,mysql,firebase,git,github,vscode&perline=6"/>
+
+</div>
+
+---
+
+# 📊 GitHub Analytics
+
+<div align="center">
+
+<img width="49%" src="https://github-readme-stats.vercel.app/api?username=Rj-Inovite&show_icons=true&theme=tokyonight&hide_border=true"/>
+
+<img width="49%" src="https://github-readme-streak-stats.herokuapp.com?user=Rj-Inovite&theme=tokyonight&hide_border=true"/>
+
+<img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Rj-Inovite&layout=compact&theme=tokyonight&hide_border=true"/>
+
+</div>
+
+---
+
+# 🚀 Installation Guide
+
+## 1️⃣ Verify Python
 
 ```bash
 py --version
 ```
+
+---
 
 ## 2️⃣ Install Django & REST Framework
 
 ```bash
 py -m pip install django djangorestframework django-cors-headers
 ```
+
+---
 
 ## 3️⃣ Install AI Libraries
 
@@ -107,9 +116,9 @@ py -m pip install opencv-python numpy pillow tensorflow
 
 ---
 
-# ▶️ Run The Project
+# ▶️ Run the Project
 
-## Create Super User
+### Create Superuser
 
 ```bash
 py manage.py createsuperuser
@@ -117,11 +126,11 @@ py manage.py createsuperuser
 
 ### Password
 
-```
+```text
 Success2026$
 ```
 
-## Start Server
+### Start Development Server
 
 ```bash
 py manage.py runserver
@@ -131,61 +140,79 @@ py manage.py runserver
 
 # 🌐 Admin Panel
 
-After running the server, open:
+After starting the server, open:
 
-**Admin Dashboard**
+## 🔗 http://127.0.0.1:8000/admin/
 
-http://127.0.0.1:8000/admin/
-
-Login using your superuser credentials.
+Manage users, datasets, AI records, and backend resources from Django Admin.
 
 ---
 
-# 📂 Project Location
+# 📁 Project Location
 
-```
+```text
 PS D:\Ruchi\React\Face-scan\Face-scan-python-Ai-automated-prj>
 ```
 
 ---
 
-# 🔬 AI Workflow
+# 📦 Folder Structure
 
-<p align="center">
-  <img src="assets/workflow.png" width="95%" alt="Workflow"/>
-</p>
-
-1. Upload Image
-2. Face Detection
-3. Feature Extraction
-4. CNN Deep Learning Analysis
-5. Forgery Prediction
-6. Confidence Score
+```text
+VeriFace-X
+│
+├── backend/
+│   ├── Django REST API
+│   ├── AI Models
+│   └── Authentication
+│
+├── flutter_app/
+│   ├── Mobile UI
+│   ├── Camera Module
+│   └── Face Scanner
+│
+├── models/
+│   ├── CNN Model
+│   └── TensorFlow Weights
+│
+└── README.md
+```
 
 ---
 
-# 📈 Future Improvements
+# 🌟 Key Features
 
-- ✅ Generative AI Detection
-- ✅ Live Camera Scanning
-- ✅ Mobile Face Verification
-- ✅ Multi-face Analysis
-- ✅ Cloud AI Deployment
+| Feature | Status |
+|----------|--------|
+| AI Face Detection | ✅ |
+| Deep Learning | ✅ |
+| TensorFlow Integration | ✅ |
+| OpenCV Processing | ✅ |
+| Django REST API | ✅ |
+| Flutter App | ✅ |
+| Admin Dashboard | ✅ |
+| Image Classification | ✅ |
 
 ---
 
-# 👩‍💻 Developer
+# 🔮 Future Roadmap
 
-**Ruchi Jasmatiya**
-
-Mobile Application Developer • Full Stack Developer • AI/ML Enthusiast
+- 🚀 Live Camera Face Verification
+- 🤖 Generative AI Detection
+- ☁️ Cloud AI Deployment
+- 📱 Android & iOS Release
+- 🔐 Biometric Identity Verification
 
 ---
 
 <div align="center">
 
-### ⭐ If you like this project, give it a Star ⭐
+## 👩‍💻 Developed by Ruchi Jasmatiya
 
-Made with ❤️ by Ruchi Jasmatiya
+### Mobile Application Developer • Full Stack Developer • AI/ML Enthusiast
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:38BDF8,100:1D4ED8&height=120&section=footer"/>
+
+⭐ **If you like this project, don't forget to Star the repository!**
 
 </div>
